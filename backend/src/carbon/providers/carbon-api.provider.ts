@@ -10,6 +10,8 @@ import {
   VehicleEmissionInput,
   FlightEmissionInput,
   EmissionTypeEnum,
+  VehicleMakesResponse,
+  VehicleModelsResponse,
 } from '../types/carbon.types';
 
 @Injectable()
@@ -71,6 +73,17 @@ export class CarbonApiProvider implements CarbonEmissionProvider {
     );
   }
 
+  // New methods for vehicle data
+  async getVehicleMakes(): Promise<VehicleMakesResponse> {
+    return this.makeGetRequest<VehicleMakesResponse>('/vehicle_makes');
+  }
+
+  async getVehicleModels(makeId: string): Promise<VehicleModelsResponse> {
+    return this.makeGetRequest<VehicleModelsResponse>(
+      `/vehicle_makes/${makeId}/vehicle_models`,
+    );
+  }
+
   private async makeApiRequest<T>(endpoint: string, body: unknown): Promise<T> {
     const res = await fetch(`${this.baseUrl}${endpoint}`, {
       method: 'POST',
@@ -79,6 +92,23 @@ export class CarbonApiProvider implements CarbonEmissionProvider {
         Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const message = await res.text();
+      throw new Error(`Carbon API error: ${res.status} - ${message}`);
+    }
+
+    return res.json() as Promise<T>;
+  }
+
+  private async makeGetRequest<T>(endpoint: string): Promise<T> {
+    const res = await fetch(`${this.baseUrl}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+      },
     });
 
     if (!res.ok) {

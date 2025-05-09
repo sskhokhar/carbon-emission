@@ -83,6 +83,29 @@ export interface EmissionEstimator<T> {
   estimate(input: T): Promise<CarbonEstimationResult>;
 }
 
+// Define interfaces for vehicle make and model responses
+export interface VehicleMakesResponse {
+  data: Array<{
+    id: string;
+    type: string;
+    attributes: {
+      name: string;
+    };
+  }>;
+}
+
+export interface VehicleModelsResponse {
+  data: Array<{
+    id: string;
+    type: string;
+    attributes: {
+      name: string;
+      year: number;
+      make_id: string;
+    };
+  }>;
+}
+
 export interface CarbonEmissionProvider {
   estimateElectricityEmissions(
     data: ElectricityEmissionInput,
@@ -93,6 +116,10 @@ export interface CarbonEmissionProvider {
   estimateFlightEmissions(
     data: FlightEmissionInput,
   ): Promise<CarbonEstimationResult>;
+
+  // New methods for vehicle data
+  getVehicleMakes(): Promise<VehicleMakesResponse>;
+  getVehicleModels(makeId: string): Promise<VehicleModelsResponse>;
 }
 
 /**

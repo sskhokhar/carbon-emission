@@ -2,9 +2,14 @@ import { Module } from '@nestjs/common';
 import { CARBON_API_PROVIDER, CarbonApiProvider } from './providers';
 import { ElectricityService, FlightService, VehicleService } from './services';
 import { CarbonService } from './carbon.service';
+import {
+  VehicleController,
+  ElectricityController,
+  FlightController,
+} from './controllers';
 
 @Module({
-  controllers: [],
+  controllers: [VehicleController, ElectricityController, FlightController],
   providers: [
     CarbonService,
     ElectricityService,

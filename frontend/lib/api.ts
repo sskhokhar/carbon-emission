@@ -30,6 +30,30 @@ export interface ElectricityEmissionRequest {
   electricity_unit: "kwh" | "mwh";
 }
 
+// Vehicle makes and models
+export interface VehicleMake {
+  data: {
+    id: string;
+    type: string;
+    attributes: {
+      name: string;
+      number_of_models: number;
+    };
+  };
+}
+
+export interface VehicleModel {
+  data: {
+    id: string;
+    type: string;
+    attributes: {
+      name: string;
+      year: number;
+      make_id: string;
+    };
+  };
+}
+
 // Response type
 export interface CarbonEstimationResult {
   carbonGrams: number;
@@ -54,11 +78,54 @@ const getApiUrl = (path: string): string => {
   return `${API_URL}${path}`;
 };
 
+// Vehicle Make and Model API functions
+export async function getVehicleMakes(): Promise<VehicleMake[]> {
+  const endpoint = `/vehicle/makes`;
+  const url = getApiUrl(endpoint);
+  logApiCall("GET", url);
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to fetch vehicle makes: ${errorText}`);
+  }
+
+  return await response.json();
+}
+
+export async function getVehicleModels(
+  makeId: string
+): Promise<VehicleModel[]> {
+  const endpoint = `/vehicle/makes/${makeId}/models`;
+  const url = getApiUrl(endpoint);
+  logApiCall("GET", url);
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to fetch vehicle models: ${errorText}`);
+  }
+
+  return await response.json();
+}
+
 // API Functions
 export async function estimateVehicleEmissions(
   data: VehicleEmissionRequest
 ): Promise<CarbonEstimationResult> {
-  const endpoint = `/estimate/vehicle`;
+  const endpoint = `/vehicle/estimate`;
   const url = getApiUrl(endpoint);
   logApiCall("POST", url, data);
 
@@ -88,7 +155,7 @@ export async function estimateVehicleEmissions(
 export async function estimateFlightEmissions(
   data: FlightEmissionRequest
 ): Promise<CarbonEstimationResult> {
-  const endpoint = `/estimate/flight`;
+  const endpoint = `/flight/estimate`;
   const url = getApiUrl(endpoint);
   logApiCall("POST", url, data);
 
@@ -118,7 +185,7 @@ export async function estimateFlightEmissions(
 export async function estimateElectricityEmissions(
   data: ElectricityEmissionRequest
 ): Promise<CarbonEstimationResult> {
-  const endpoint = `/estimate/electricity`;
+  const endpoint = `/electricity/estimate`;
   const url = getApiUrl(endpoint);
   logApiCall("POST", url, data);
 
