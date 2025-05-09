@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { CountryDropdown, Country } from "@/components/ui/country-dropdown";
 
 // This schema matches the backend electricity.dto.ts requirements
 const electricityFormSchema = z.object({
@@ -58,6 +59,15 @@ export default function ElectricityForm({
     },
   });
 
+  // Get countries that have provided state field - primarily for US
+  const hasStateOptions = ["US", "CA", "AU"];
+
+  // Check if the selected country supports states
+  const selectedCountry = form.watch("country");
+  const showStateField = hasStateOptions.includes(
+    selectedCountry?.toUpperCase() || ""
+  );
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -67,22 +77,20 @@ export default function ElectricityForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Country</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a country" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="us">United States</SelectItem>
-                  <SelectItem value="ca">Canada</SelectItem>
-                  <SelectItem value="gb">United Kingdom</SelectItem>
-                  <SelectItem value="de">Germany</SelectItem>
-                  <SelectItem value="fr">France</SelectItem>
-                  <SelectItem value="au">Australia</SelectItem>
-                  <SelectItem value="jp">Japan</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <CountryDropdown
+                  defaultValue={field.value}
+                  onChange={(country: Country) => {
+                    field.onChange(country.alpha2.toLowerCase());
+
+                    // Clear state if changing country
+                    if (!hasStateOptions.includes(country.alpha2)) {
+                      form.setValue("state", "");
+                    }
+                  }}
+                  placeholder="Select a country"
+                />
+              </FormControl>
               <FormDescription>
                 Select the country where electricity is consumed.
               </FormDescription>
@@ -91,27 +99,29 @@ export default function ElectricityForm({
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="state"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>State/Province (Optional)</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter state or province"
-                  {...field}
-                  value={field.value || ""}
-                />
-              </FormControl>
-              <FormDescription>
-                For some countries like US, enter the state for more accurate
-                calculations.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        {showStateField && (
+          <FormField
+            control={form.control}
+            name="state"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>State/Province</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter state or province"
+                    {...field}
+                    value={field.value || ""}
+                  />
+                </FormControl>
+                <FormDescription>
+                  For countries like US, enter the state for more accurate
+                  calculations.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
 
         <FormField
           control={form.control}
