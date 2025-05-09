@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -23,14 +23,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import {
-  getVehicleMakes,
-  getVehicleModels,
-  VehicleMake,
-  VehicleModel,
-} from "@/lib/api";
 import { Combobox, ComboboxOption } from "@/components/ui/combobox";
+import {
+  useVehicleMakes,
+  useVehicleModels,
+  useVehicleEmissionEstimation,
+} from "@/lib/hooks";
+import { useQueryClient } from "@tanstack/react-query";
+import { CARBON_RESULT_KEY } from "../home.view";
 
+// This schema matches the backend vehicle.dto.ts requirements
 const vehicleFormSchema = z.object({
   distance_value: z.coerce
     .number({
@@ -55,11 +57,33 @@ export default function VehicleForm({
   onSubmit,
   isSubmitting = false,
 }: VehicleFormProps) {
-  const [vehicleMakes, setVehicleMakes] = useState<VehicleMake[]>([]);
-  const [vehicleModels, setVehicleModels] = useState<VehicleModel[]>([]);
   const [selectedMakeId, setSelectedMakeId] = useState<string>("");
-  const [isLoadingMakes, setIsLoadingMakes] = useState(false);
-  const [isLoadingModels, setIsLoadingModels] = useState(false);
+
+  // React Query hooks
+  const {
+    data: vehicleMakes = [],
+    isLoading: isLoadingMakes,
+    error: makesError,
+  } = useVehicleMakes();
+
+  const {
+    data: vehicleModels = [],
+    isLoading: isLoadingModels,
+    error: modelsError,
+  } = useVehicleModels(selectedMakeId || null);
+
+  const estimateMutation = useVehicleEmissionEstimation();
+
+  const queryClient = useQueryClient();
+
+  // Show toast on errors
+  if (makesError) {
+    toast.error("Failed to load vehicle makes. Please try again.");
+  }
+
+  if (modelsError) {
+    toast.error("Failed to load vehicle models. Please try again.");
+  }
 
   const form = useForm<VehicleFormValues>({
     resolver: zodResolver(vehicleFormSchema),
@@ -70,64 +94,43 @@ export default function VehicleForm({
     },
   });
 
-  useEffect(() => {
-    async function fetchVehicleMakes() {
-      try {
-        setIsLoadingMakes(true);
-        const response = await getVehicleMakes();
-        setVehicleMakes(
-          response.sort((a, b) =>
-            a.data.attributes.name.localeCompare(b.data.attributes.name)
-          ) || []
-        );
-      } catch (error) {
-        console.error("Failed to fetch vehicle makes:", error);
-        toast.error("Failed to load vehicle makes. Please try again.");
-      } finally {
-        setIsLoadingMakes(false);
-      }
-    }
-
-    fetchVehicleMakes();
-  }, []);
-
-  useEffect(() => {
-    async function fetchVehicleModels() {
-      if (!selectedMakeId) return;
-
-      try {
-        setIsLoadingModels(true);
-        const response = await getVehicleModels(selectedMakeId);
-        setVehicleModels(response || []);
-      } catch (error) {
-        console.error("Failed to fetch vehicle models:", error);
-        toast.error("Failed to load vehicle models. Please try again.");
-      } finally {
-        setIsLoadingModels(false);
-      }
-    }
-
-    fetchVehicleModels();
-  }, [selectedMakeId]);
-
+  // Handle make selection
   const handleMakeChange = (makeId: string) => {
     setSelectedMakeId(makeId);
+    // Reset the model selection when make changes
     form.setValue("vehicle_model_id", undefined);
   };
 
+  // Convert vehicle makes to combobox options
   const makeOptions: ComboboxOption[] = vehicleMakes.map((make) => ({
     value: make?.data?.id,
     label: `${make?.data?.attributes?.name} (${make?.data?.attributes?.number_of_models} models)`,
   }));
 
+  // Convert vehicle models to combobox options
   const modelOptions: ComboboxOption[] = vehicleModels.map((model) => ({
     value: model?.data?.id,
     label: `${model?.data?.attributes?.name} (${model?.data?.attributes?.year})`,
   }));
 
+  // Handle form submission with React Query
+  const handleSubmit = async (data: VehicleFormValues) => {
+    try {
+      const result = await estimateMutation.mutateAsync(data);
+
+      // Store the result in the React Query cache
+      queryClient.setQueryData(CARBON_RESULT_KEY, result);
+
+      onSubmit(data);
+    } catch (error) {
+      console.error("Failed to estimate vehicle emissions:", error);
+      toast.error("Failed to calculate vehicle emissions. Please try again.");
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="distance_value"
@@ -168,6 +171,7 @@ export default function VehicleForm({
           )}
         />
 
+        {/* Vehicle Make Dropdown */}
         <FormItem>
           <FormLabel>Vehicle Make</FormLabel>
           <Combobox
@@ -179,11 +183,12 @@ export default function VehicleForm({
             }
             searchPlaceholder="Search vehicle makes..."
             emptyText="No vehicle makes found."
-            disabled={isLoadingMakes || vehicleMakes?.length === 0}
+            disabled={isLoadingMakes || makeOptions.length === 0}
           />
           <FormDescription>Select the make of your vehicle.</FormDescription>
         </FormItem>
 
+        {/* Vehicle Model Dropdown */}
         <FormField
           control={form.control}
           name="vehicle_model_id"
@@ -206,7 +211,7 @@ export default function VehicleForm({
                 disabled={
                   isLoadingModels ||
                   !selectedMakeId ||
-                  vehicleModels.length === 0
+                  modelOptions.length === 0
                 }
               />
               <FormDescription>
@@ -217,8 +222,14 @@ export default function VehicleForm({
           )}
         />
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Calculating..." : "Calculate Vehicle Emissions"}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isSubmitting || estimateMutation.isPending}
+        >
+          {isSubmitting || estimateMutation.isPending
+            ? "Calculating..."
+            : "Calculate Vehicle Emissions"}
         </Button>
       </form>
     </Form>

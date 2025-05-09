@@ -14,66 +14,33 @@ import { toast } from "sonner";
 import ElectricityForm from "./forms/ElectricityForm";
 import VehicleForm from "./forms/VehicleForm";
 import FlightForm from "./forms/FlightForm";
-import {
-  estimateElectricityEmissions,
-  estimateVehicleEmissions,
-  estimateFlightEmissions,
-  CarbonEstimationResult,
-  ElectricityEmissionRequest,
-  VehicleEmissionRequest,
-  FlightEmissionRequest,
-} from "@/lib/api";
+import { CarbonEstimationResult } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
+
+// Key for storing carbon estimation results
+export const CARBON_RESULT_KEY = ["carbonEstimation"];
 
 export default function HomeView() {
   const [activeTab, setActiveTab] = useState<string>("electricity");
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [result, setResult] = useState<CarbonEstimationResult | null>(null);
 
-  // Handle electricity form submission
-  const handleElectricitySubmit = async (data: ElectricityEmissionRequest) => {
-    try {
-      setIsSubmitting(true);
-      const result = await estimateElectricityEmissions(data);
-      setResult(result);
-      toast.success("Electricity emissions calculated successfully!");
-    } catch (error) {
-      console.error(error);
-      toast.error(
-        "Failed to calculate electricity emissions. Please try again."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+  // Use React Query for storing the latest calculation result
+  const { data: result } = useQuery<CarbonEstimationResult | null>({
+    queryKey: CARBON_RESULT_KEY,
+    queryFn: () => null,
+    enabled: false, // Don't run on mount
+  });
+
+  // Handle form submissions - just show success message
+  const handleElectricitySubmit = () => {
+    toast.success("Electricity emissions calculated successfully!");
   };
 
-  // Handle vehicle form submission
-  const handleVehicleSubmit = async (data: VehicleEmissionRequest) => {
-    try {
-      setIsSubmitting(true);
-      const result = await estimateVehicleEmissions(data);
-      setResult(result);
-      toast.success("Vehicle emissions calculated successfully!");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to calculate vehicle emissions. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleVehicleSubmit = () => {
+    toast.success("Vehicle emissions calculated successfully!");
   };
 
-  // Handle flight form submission
-  const handleFlightSubmit = async (data: FlightEmissionRequest) => {
-    try {
-      setIsSubmitting(true);
-      const result = await estimateFlightEmissions(data);
-      setResult(result);
-      toast.success("Flight emissions calculated successfully!");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to calculate flight emissions. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleFlightSubmit = () => {
+    toast.success("Flight emissions calculated successfully!");
   };
 
   return (
@@ -146,7 +113,7 @@ export default function HomeView() {
               <CardContent>
                 <ElectricityForm
                   onSubmit={handleElectricitySubmit}
-                  isSubmitting={isSubmitting}
+                  isSubmitting={false}
                 />
               </CardContent>
             </Card>
@@ -165,7 +132,7 @@ export default function HomeView() {
               <CardContent>
                 <VehicleForm
                   onSubmit={handleVehicleSubmit}
-                  isSubmitting={isSubmitting}
+                  isSubmitting={false}
                 />
               </CardContent>
             </Card>
@@ -184,7 +151,7 @@ export default function HomeView() {
               <CardContent>
                 <FlightForm
                   onSubmit={handleFlightSubmit}
-                  isSubmitting={isSubmitting}
+                  isSubmitting={false}
                 />
               </CardContent>
             </Card>

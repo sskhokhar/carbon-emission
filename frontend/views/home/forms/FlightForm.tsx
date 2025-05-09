@@ -16,6 +16,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { PlusCircle, Trash } from "lucide-react";
+import { useFlightEmissionEstimation } from "@/lib/hooks";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
+import { CARBON_RESULT_KEY } from "../home.view";
 
 const legSchema = z.object({
   departure_airport: z.string().min(3).max(4),
@@ -47,6 +51,10 @@ export default function FlightForm({
     { departure_airport: "", destination_airport: "" },
   ]);
 
+  // Use React Query for API calls
+  const estimateMutation = useFlightEmissionEstimation();
+  const queryClient = useQueryClient();
+
   const form = useForm<FlightFormValues>({
     resolver: zodResolver(flightFormSchema),
     defaultValues: {
@@ -72,9 +80,24 @@ export default function FlightForm({
     }
   };
 
+  // Handle form submission with React Query
+  const handleSubmit = async (data: FlightFormValues) => {
+    try {
+      const result = await estimateMutation.mutateAsync(data);
+
+      // Store the result in the React Query cache
+      queryClient.setQueryData(CARBON_RESULT_KEY, result);
+
+      onSubmit(data);
+    } catch (error) {
+      console.error("Failed to estimate flight emissions:", error);
+      toast.error("Failed to calculate flight emissions. Please try again.");
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <FormField
           control={form.control}
           name="passengers"
@@ -169,8 +192,14 @@ export default function FlightForm({
           ))}
         </div>
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Calculating..." : "Calculate Flight Emissions"}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isSubmitting || estimateMutation.isPending}
+        >
+          {isSubmitting || estimateMutation.isPending
+            ? "Calculating..."
+            : "Calculate Flight Emissions"}
         </Button>
       </form>
     </Form>
