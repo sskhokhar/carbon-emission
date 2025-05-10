@@ -17,20 +17,17 @@ import FlightForm from "./components/FlightForm";
 import { CarbonEstimationResult } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 
-// Key for storing carbon estimation results
 export const CARBON_RESULT_KEY = ["carbonEstimation"];
 
 export default function HomeView() {
   const [activeTab, setActiveTab] = useState<string>("electricity");
 
-  // Use React Query for storing the latest calculation result
   const { data: result } = useQuery<CarbonEstimationResult | null>({
     queryKey: CARBON_RESULT_KEY,
     queryFn: () => null,
-    enabled: false, // Don't run on mount
+    enabled: false,
   });
 
-  // Handle form submissions - just show success message
   const handleElectricitySubmit = () => {
     toast.success("Electricity emissions calculated successfully!");
   };

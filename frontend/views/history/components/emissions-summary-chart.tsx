@@ -18,11 +18,9 @@ interface EmissionsSummaryChartProps {
 export function EmissionsSummaryChart({
   historyRecords,
 }: EmissionsSummaryChartProps) {
-  // Prepare data for donut chart
   const chartData = useMemo(() => {
     if (!historyRecords.length) return [];
 
-    // Group emissions by type
     const emissionsByType: Record<string, number> = {};
 
     historyRecords.forEach((record: EstimationRecord) => {
@@ -36,7 +34,6 @@ export function EmissionsSummaryChart({
       emissionsByType[type] += value;
     });
 
-    // Map to chart format
     const colorMap: Record<string, string> = {
       vehicle: "#8884d8",
       electricity: "#82ca9d",
@@ -50,7 +47,6 @@ export function EmissionsSummaryChart({
     }));
   }, [historyRecords]);
 
-  // Calculate total emissions
   const totalEmissions = useMemo(() => {
     return chartData.reduce((total, item) => total + item.value, 0);
   }, [chartData]);

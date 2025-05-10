@@ -32,7 +32,6 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { CARBON_RESULT_KEY } from "../home.view";
 
-// This schema matches the backend vehicle.dto.ts requirements
 const vehicleFormSchema = z.object({
   distance_value: z.coerce
     .number({
@@ -59,7 +58,6 @@ export default function VehicleForm({
 }: VehicleFormProps) {
   const [selectedMakeId, setSelectedMakeId] = useState<string>("");
 
-  // React Query hooks
   const {
     data: vehicleMakes = [],
     isLoading: isLoadingMakes,
@@ -76,7 +74,6 @@ export default function VehicleForm({
 
   const queryClient = useQueryClient();
 
-  // Show toast on errors
   if (makesError) {
     toast.error("Failed to load vehicle makes. Please try again.");
   }
@@ -94,34 +91,27 @@ export default function VehicleForm({
     },
   });
 
-  // Handle make selection
   const handleMakeChange = (makeId: string) => {
     setSelectedMakeId(makeId);
-    // Reset the model selection when make changes
     form.setValue("vehicle_model_id", undefined);
   };
 
-  // Convert vehicle makes to combobox options
   const makeOptions: ComboboxOption[] = vehicleMakes.map((make) => ({
     value: make?.data?.id,
     label: `${make?.data?.attributes?.name} (${make?.data?.attributes?.number_of_models} models)`,
   }));
 
-  // Convert vehicle models to combobox options
   const modelOptions: ComboboxOption[] = vehicleModels.map((model) => ({
     value: model?.data?.id,
     label: `${model?.data?.attributes?.name} (${model?.data?.attributes?.year})`,
   }));
 
-  // Handle form submission with React Query
   const handleSubmit = async (data: VehicleFormValues) => {
     try {
       const result = await estimateMutation.mutateAsync(data);
 
-      // Store the result in the React Query cache
       queryClient.setQueryData(CARBON_RESULT_KEY, result);
 
-      // Invalidate the estimation history query to trigger a refetch
       queryClient.invalidateQueries({ queryKey: ["estimationHistory"] });
 
       onSubmit(data);

@@ -28,43 +28,39 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CARBON_RESULT_KEY } from "../home.view";
 import { countries } from "country-data-list";
 
-// List of supported countries
 const SUPPORTED_COUNTRIES = [
-  "US", // United States of America
-  "CA", // Canada
-  "AT", // Austria
-  "BE", // Belgium
-  "BG", // Bulgaria
-  "HR", // Croatia
-  "CY", // Cyprus
-  "CZ", // Czechia
-  "DK", // Denmark
-  // "EU", // EU-27 (Special case)
-  // "EU+1", // EU27+1 (Special case)
-  "EE", // Estonia
-  "FI", // Finland
-  "FR", // France
-  "DE", // Germany
-  "GR", // Greece
-  "HU", // Hungary
-  "IE", // Ireland
-  "IT", // Italy
-  "LV", // Latvia
-  "LT", // Lithuania
-  "LU", // Luxembourg
-  "MT", // Malta
-  "NL", // Netherlands
-  "PL", // Poland
-  "PT", // Portugal
-  "RO", // Romania
-  "SK", // Slovakia
-  "SI", // Slovenia
-  "ES", // Spain
-  "SE", // Sweden
-  "GB", // United Kingdom
+  "US",
+  "CA",
+  "AT",
+  "BE",
+  "BG",
+  "HR",
+  "CY",
+  "CZ",
+  "DK",
+  "EE",
+  "FI",
+  "FR",
+  "DE",
+  "GR",
+  "HU",
+  "IE",
+  "IT",
+  "LV",
+  "LT",
+  "LU",
+  "MT",
+  "NL",
+  "PL",
+  "PT",
+  "RO",
+  "SK",
+  "SI",
+  "ES",
+  "SE",
+  "GB",
 ];
 
-// Filter only supported countries
 const supportedCountryOptions = countries.all.filter(
   (country) =>
     country.emoji &&
@@ -72,7 +68,6 @@ const supportedCountryOptions = countries.all.filter(
     SUPPORTED_COUNTRIES.includes(country.alpha2)
 );
 
-// This schema matches the backend electricity.dto.ts requirements
 const electricityFormSchema = z.object({
   country: z.string().min(1, { message: "Country is required" }),
   state: z.string().optional(),
@@ -98,7 +93,6 @@ export default function ElectricityForm({
   onSubmit,
   isSubmitting = false,
 }: ElectricityFormProps) {
-  // Use React Query for API calls
   const estimateMutation = useElectricityEmissionEstimation();
   const queryClient = useQueryClient();
 
@@ -114,21 +108,17 @@ export default function ElectricityForm({
 
   const hasStateOptions = ["US"];
 
-  // Check if the selected country supports states
   const selectedCountry = form.watch("country");
   const showStateField = hasStateOptions.includes(
     selectedCountry?.toUpperCase() || ""
   );
 
-  // Handle form submission with React Query
   const handleSubmit = async (data: ElectricityFormValues) => {
     try {
       const result = await estimateMutation.mutateAsync(data);
 
-      // Store the result in the React Query cache
       queryClient.setQueryData(CARBON_RESULT_KEY, result);
 
-      // Invalidate the estimation history query to trigger a refetch
       queryClient.invalidateQueries({ queryKey: ["estimationHistory"] });
 
       onSubmit(data);
@@ -155,7 +145,6 @@ export default function ElectricityForm({
                   onChange={(country: Country) => {
                     field.onChange(country.alpha2.toLowerCase());
 
-                    // Clear state if changing country
                     if (!hasStateOptions.includes(country.alpha2)) {
                       form.setValue("state", "");
                     }

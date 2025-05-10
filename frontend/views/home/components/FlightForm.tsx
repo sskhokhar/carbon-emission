@@ -26,7 +26,6 @@ const legSchema = z.object({
   destination_airport: z.string().min(3).max(4),
 });
 
-// This schema matches the backend flight.dto.ts requirements
 const flightFormSchema = z.object({
   passengers: z.coerce
     .number()
@@ -51,7 +50,6 @@ export default function FlightForm({
     { departure_airport: "", destination_airport: "" },
   ]);
 
-  // Use React Query for API calls
   const estimateMutation = useFlightEmissionEstimation();
   const queryClient = useQueryClient();
 
@@ -80,15 +78,12 @@ export default function FlightForm({
     }
   };
 
-  // Handle form submission with React Query
   const handleSubmit = async (data: FlightFormValues) => {
     try {
       const result = await estimateMutation.mutateAsync(data);
 
-      // Store the result in the React Query cache
       queryClient.setQueryData(CARBON_RESULT_KEY, result);
 
-      // Invalidate the estimation history query to trigger a refetch
       queryClient.invalidateQueries({ queryKey: ["estimationHistory"] });
 
       onSubmit(data);
