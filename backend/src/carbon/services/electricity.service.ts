@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CARBON_API_PROVIDER } from '../providers/tokens';
-import { CarbonEstimationResult, ElectricityEmissionInput } from '../types';
+import { CarbonEstimationResult } from '../types/emission-types';
 import { CarbonEmissionProvider } from '../providers/provider.interface';
 import { ElectricityDto } from '../dto';
 
@@ -14,12 +14,6 @@ export class ElectricityService {
   async estimateEmissions(
     data: ElectricityDto,
   ): Promise<CarbonEstimationResult> {
-    const input: ElectricityEmissionInput = {
-      country: data.country,
-      state: data.state,
-      electricity_value: data.electricity_value,
-      electricity_unit: data.electricity_unit,
-    };
-    return this.carbonEmissionProvider.estimateElectricityEmissions(input);
+    return this.carbonEmissionProvider.estimateElectricityEmissions(data);
   }
 }

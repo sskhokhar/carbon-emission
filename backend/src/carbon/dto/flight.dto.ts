@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const legSchema = z.object({
+export const legSchema = z.object({
   departure_airport: z.string().min(3).max(4),
   destination_airport: z.string().min(3).max(4),
 });

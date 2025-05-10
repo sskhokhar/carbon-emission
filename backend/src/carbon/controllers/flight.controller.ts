@@ -6,9 +6,9 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ZodValidationPipe } from 'nestjs-zod';
-import { FlightService } from '../services/flight.service';
-import { CarbonEstimationResult } from '../types/emission-types';
-import { flightSchema, FlightDto } from '../dto/flight.dto';
+import { FlightService } from '../services';
+import { CarbonEstimationResult } from '../types';
+import { flightSchema, FlightDto } from '../dto';
 import { DatabaseService } from '../../database/database.service';
 
 @Controller('flight')
@@ -25,8 +25,6 @@ export class FlightController {
   ): Promise<CarbonEstimationResult> {
     try {
       const result = await this.flightService.estimateEmissions(data);
-
-      // Save the estimation to the database
       await this.databaseService.saveEstimation(result);
 
       return result;

@@ -2,12 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   EmissionTypeEnum,
   CarbonEstimationResult,
-  ElectricityEmissionInput,
-  VehicleEmissionInput,
-  FlightEmissionInput,
+} from '../../types/emission-types';
+import { ElectricityDto, VehicleDto, FlightDto } from '../../dto';
+import {
   VehicleMakesResponse,
   VehicleModelsResponse,
-} from '../../types';
+} from '../../types/api-response-types';
 import { CarbonEmissionProvider } from '../provider.interface';
 
 class MockCarbonProvider implements CarbonEmissionProvider {
@@ -22,7 +22,7 @@ class MockCarbonProvider implements CarbonEmissionProvider {
   };
 
   estimateElectricityEmissions(
-    input: ElectricityEmissionInput,
+    input: ElectricityDto,
   ): Promise<CarbonEstimationResult> {
     this.calls.electricity++;
     return Promise.resolve(
@@ -30,18 +30,14 @@ class MockCarbonProvider implements CarbonEmissionProvider {
     );
   }
 
-  estimateVehicleEmissions(
-    input: VehicleEmissionInput,
-  ): Promise<CarbonEstimationResult> {
+  estimateVehicleEmissions(input: VehicleDto): Promise<CarbonEstimationResult> {
     this.calls.vehicle++;
     return Promise.resolve(
       this.createMockResponse(EmissionTypeEnum.VEHICLE, input),
     );
   }
 
-  estimateFlightEmissions(
-    input: FlightEmissionInput,
-  ): Promise<CarbonEstimationResult> {
+  estimateFlightEmissions(input: FlightDto): Promise<CarbonEstimationResult> {
     this.calls.flight++;
     return Promise.resolve(
       this.createMockResponse(EmissionTypeEnum.FLIGHT, input),
@@ -130,7 +126,7 @@ describe('MockCarbonProvider (Adapter Pattern)', () => {
   describe('estimateElectricityEmissions', () => {
     it('should return a standardized response structure', async () => {
       // Arrange
-      const input: ElectricityEmissionInput = {
+      const input: ElectricityDto = {
         country: 'us',
         electricity_value: 100,
         electricity_unit: 'kwh',
@@ -145,7 +141,6 @@ describe('MockCarbonProvider (Adapter Pattern)', () => {
       expect(result).toHaveProperty('carbonKg');
       expect(result).toHaveProperty('carbonMt');
       expect(result).toHaveProperty('estimatedAt');
-      expect(result).toHaveProperty('source');
       expect(result).toHaveProperty('emissionType');
       expect(result).toHaveProperty('originalInput');
 
@@ -159,7 +154,7 @@ describe('MockCarbonProvider (Adapter Pattern)', () => {
   describe('estimateVehicleEmissions', () => {
     it('should return a standardized response structure', async () => {
       // Arrange
-      const input: VehicleEmissionInput = {
+      const input: VehicleDto = {
         distance_value: 100,
         distance_unit: 'mi',
       };
@@ -177,7 +172,7 @@ describe('MockCarbonProvider (Adapter Pattern)', () => {
   describe('estimateFlightEmissions', () => {
     it('should return a standardized response structure', async () => {
       // Arrange
-      const input: FlightEmissionInput = {
+      const input: FlightDto = {
         passengers: 2,
         legs: [
           {

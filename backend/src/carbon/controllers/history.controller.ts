@@ -14,17 +14,11 @@ import {
 export class HistoryController {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  /**
-   * Get all estimation records
-   */
   @Get()
   async getAllEstimations(): Promise<EstimationRecord[]> {
     return this.databaseService.getAllEstimations();
   }
 
-  /**
-   * Get a specific estimation record by ID
-   */
   @Get(':id')
   async getEstimationById(@Param('id') id: string): Promise<EstimationRecord> {
     const record = await this.databaseService.getEstimationById(id);
@@ -36,9 +30,6 @@ export class HistoryController {
     return record;
   }
 
-  /**
-   * Clear all estimation records
-   */
   @Delete('clear')
   async clearHistory(): Promise<{ success: boolean; message: string }> {
     await this.databaseService.clearAllEstimations();

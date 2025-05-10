@@ -45,7 +45,6 @@ describe('ElectricityService', () => {
       carbonKg: 1,
       carbonMt: 0.001,
       estimatedAt: new Date('2023-01-01T00:00:00Z'),
-      source: 'CarbonInterface',
       emissionType: 'electricity',
       originalInput: {
         country: 'us',

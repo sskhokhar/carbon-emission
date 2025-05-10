@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { CarbonApiProvider } from '../carbon-api.provider';
-import { EmissionTypeEnum } from '../../types';
+import { EmissionTypeEnum } from '../../types/emission-types';
+import { ElectricityUnit } from '../../dto/electricity.dto';
+import { DistanceUnit } from '../../dto/vehicle.dto';
 
 describe('CarbonApiProvider', () => {
   let provider: CarbonApiProvider;
@@ -40,7 +42,7 @@ describe('CarbonApiProvider', () => {
       country: 'us',
       state: 'ca',
       electricity_value: 100,
-      electricity_unit: 'kwh',
+      electricity_unit: ElectricityUnit.KWH,
     };
 
     const mockElectricityResponse = {
@@ -100,7 +102,6 @@ describe('CarbonApiProvider', () => {
         carbonKg: 1,
         carbonMt: 0.001,
         estimatedAt: new Date('2023-01-01T00:00:00Z'),
-        source: 'CarbonInterface',
         emissionType: EmissionTypeEnum.ELECTRICITY,
         originalInput: mockElectricityInput,
       });
@@ -126,7 +127,7 @@ describe('CarbonApiProvider', () => {
   describe('estimateVehicleEmissions', () => {
     // Arrange - common test data
     const mockVehicleInput = {
-      distance_unit: 'mi',
+      distance_unit: DistanceUnit.MI,
       distance_value: 100,
       vehicle_model_id: 'mock-model-id',
     };
@@ -189,7 +190,6 @@ describe('CarbonApiProvider', () => {
         carbonKg: 2,
         carbonMt: 0.002,
         estimatedAt: new Date('2023-01-01T00:00:00Z'),
-        source: 'CarbonInterface',
         emissionType: EmissionTypeEnum.VEHICLE,
         originalInput: mockVehicleInput,
       });

@@ -6,9 +6,9 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ZodValidationPipe } from 'nestjs-zod';
-import { ElectricityService } from '../services/electricity.service';
-import { CarbonEstimationResult } from '../types/emission-types';
-import { electricitySchema, ElectricityDto } from '../dto/electricity.dto';
+import { ElectricityService } from '../services';
+import { CarbonEstimationResult } from '../types';
+import { electricitySchema, ElectricityDto } from '../dto';
 import { DatabaseService } from '../../database/database.service';
 
 @Controller('electricity')
@@ -25,8 +25,6 @@ export class ElectricityController {
   ): Promise<CarbonEstimationResult> {
     try {
       const result = await this.electricityService.estimateEmissions(data);
-
-      // Save the estimation to the database
       await this.databaseService.saveEstimation(result);
 
       return result;

@@ -3,22 +3,19 @@ import { ConfigService } from '@nestjs/config';
 import {
   CarbonEstimationResult,
   EmissionTypeEnum,
-  ElectricityEmissionInput,
-  VehicleEmissionInput,
-  FlightEmissionInput,
   VehicleMakesResponse,
   VehicleModelsResponse,
   CarbonInterfaceElectricityResponse,
   CarbonInterfaceVehicleResponse,
   CarbonInterfaceFlightResponse,
 } from '../types';
-
+import { ElectricityDto, VehicleDto, FlightDto } from '../dto';
 import { CarbonEmissionProvider } from './provider.interface';
+
 @Injectable()
 export class CarbonApiProvider implements CarbonEmissionProvider {
   private readonly apiKey: string;
   private readonly baseUrl = 'https://www.carboninterface.com/api/v1';
-  private readonly PROVIDER_NAME = 'CarbonInterface';
 
   constructor(private configService: ConfigService) {
     this.apiKey =
@@ -28,7 +25,7 @@ export class CarbonApiProvider implements CarbonEmissionProvider {
   }
 
   async estimateElectricityEmissions(
-    input: ElectricityEmissionInput,
+    input: ElectricityDto,
   ): Promise<CarbonEstimationResult> {
     const response =
       await this.makeApiRequest<CarbonInterfaceElectricityResponse>(
@@ -44,7 +41,7 @@ export class CarbonApiProvider implements CarbonEmissionProvider {
   }
 
   async estimateVehicleEmissions(
-    input: VehicleEmissionInput,
+    input: VehicleDto,
   ): Promise<CarbonEstimationResult> {
     const response = await this.makeApiRequest<CarbonInterfaceVehicleResponse>(
       '/estimates',
@@ -59,7 +56,7 @@ export class CarbonApiProvider implements CarbonEmissionProvider {
   }
 
   async estimateFlightEmissions(
-    input: FlightEmissionInput,
+    input: FlightDto,
   ): Promise<CarbonEstimationResult> {
     const response = await this.makeApiRequest<CarbonInterfaceFlightResponse>(
       '/estimates',
@@ -73,7 +70,6 @@ export class CarbonApiProvider implements CarbonEmissionProvider {
     );
   }
 
-  // New methods for vehicle data
   async getVehicleMakes(): Promise<VehicleMakesResponse> {
     return this.makeGetRequest<VehicleMakesResponse>('/vehicle_makes');
   }

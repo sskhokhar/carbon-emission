@@ -31,7 +31,6 @@ describe('FlightService', () => {
   });
 
   describe('estimateEmissions', () => {
-    // Arrange - common test data
     const mockFlightDto: FlightDto = {
       passengers: 2,
       legs: [
@@ -52,7 +51,6 @@ describe('FlightService', () => {
       carbonKg: 3,
       carbonMt: 0.003,
       estimatedAt: new Date('2023-01-01T00:00:00Z'),
-      source: 'CarbonInterface',
       emissionType: 'flight',
       originalInput: {
         passengers: 2,

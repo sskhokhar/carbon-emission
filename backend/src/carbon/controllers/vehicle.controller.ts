@@ -29,9 +29,6 @@ export class VehicleController {
     private readonly databaseService: DatabaseService,
   ) {}
 
-  /**
-   * Fetch all available vehicle makes
-   */
   @Get('makes')
   async getVehicleMakes(): Promise<VehicleMakesResponse> {
     try {
@@ -45,9 +42,6 @@ export class VehicleController {
     }
   }
 
-  /**
-   * Fetch all models for a specific vehicle make
-   */
   @Get('makes/:makeId/models')
   async getVehicleModels(
     @Param('makeId') makeId: string,
@@ -63,9 +57,6 @@ export class VehicleController {
     }
   }
 
-  /**
-   * Estimate carbon emissions for a vehicle
-   */
   @Post('estimate')
   @UsePipes(new ZodValidationPipe(vehicleSchema))
   async estimateVehicleEmissions(
@@ -73,8 +64,6 @@ export class VehicleController {
   ): Promise<CarbonEstimationResult> {
     try {
       const result = await this.vehicleService.estimateEmissions(data);
-
-      // Save the estimation to the database
       await this.databaseService.saveEstimation(result);
 
       return result;

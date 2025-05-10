@@ -31,7 +31,6 @@ describe('VehicleService', () => {
   });
 
   describe('estimateEmissions', () => {
-    // Arrange - common test data
     const mockVehicleDto: VehicleDto = {
       distance_value: 100,
       distance_unit: 'mi',
@@ -44,7 +43,6 @@ describe('VehicleService', () => {
       carbonKg: 2,
       carbonMt: 0.002,
       estimatedAt: new Date('2023-01-01T00:00:00Z'),
-      source: 'CarbonInterface',
       emissionType: 'vehicle',
       originalInput: {
         distance_value: 100,

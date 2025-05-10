@@ -67,10 +67,6 @@ export default function HomeView() {
                     {result.emissionType}
                   </span>
                 </p>
-                <p className="text-sm flex justify-between gap-4">
-                  <span className="text-muted-foreground">Source:</span>
-                  <span className="font-medium">{result.source}</span>
-                </p>
               </div>
             </div>
           )}

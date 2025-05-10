@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { carbonValuesSchema } from './emission-types';
-import { flightLegSchema } from './input-types';
+import { legSchema } from '../dto/flight.dto';
 
 const electricityAttributes = carbonValuesSchema.extend({
   country: z.string(),
@@ -21,7 +21,7 @@ export type CarbonInterfaceElectricityResponse = z.infer<
 
 const flightAttributes = carbonValuesSchema.extend({
   passengers: z.number(),
-  legs: z.array(flightLegSchema),
+  legs: z.array(legSchema),
   distance_unit: z.string(),
   distance_value: z.number(),
 });

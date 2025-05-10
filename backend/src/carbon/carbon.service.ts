@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ElectricityService, VehicleService, FlightService } from './services';
-import { CarbonEstimationResult } from './types';
+import { CarbonEstimationResult } from './types/emission-types';
 import { ElectricityDto, VehicleDto, FlightDto } from './dto';
 
 @Injectable()
