@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState, forwardRef, useEffect } from "react";
+import React, { useCallback, useState, forwardRef } from "react";
 
 // shadcn
 import {
@@ -43,7 +43,6 @@ export interface Country {
 interface CountryDropdownProps {
   options?: Country[];
   onChange?: (country: Country) => void;
-  defaultValue?: string;
   disabled?: boolean;
   placeholder?: string;
   slim?: boolean;
@@ -56,7 +55,6 @@ const CountryDropdownComponent = (
         country.emoji && country.status !== "deleted" && country.ioc !== "PRK"
     ),
     onChange,
-    defaultValue,
     disabled = false,
     placeholder = "Select a country",
     slim = false,
@@ -69,26 +67,8 @@ const CountryDropdownComponent = (
     undefined
   );
 
-  useEffect(() => {
-    if (defaultValue) {
-      const initialCountry = options.find(
-        (country) => country.alpha3 === defaultValue
-      );
-      if (initialCountry) {
-        setSelectedCountry(initialCountry);
-      } else {
-        // Reset selected country if defaultValue is not found
-        setSelectedCountry(undefined);
-      }
-    } else {
-      // Reset selected country if defaultValue is undefined or null
-      setSelectedCountry(undefined);
-    }
-  }, [defaultValue, options]);
-
   const handleSelect = useCallback(
     (country: Country) => {
-      console.log("🌍 CountryDropdown value: ", country);
       setSelectedCountry(country);
       onChange?.(country);
       setOpen(false);
@@ -124,13 +104,7 @@ const CountryDropdownComponent = (
             )}
           </div>
         ) : (
-          <span>
-            {slim === false ? (
-              placeholder || setSelectedCountry.name
-            ) : (
-              <Globe size={20} />
-            )}
-          </span>
+          <span>{slim === false ? placeholder : <Globe size={20} />}</span>
         )}
         <ChevronDown size={16} />
       </PopoverTrigger>
@@ -168,7 +142,7 @@ const CountryDropdownComponent = (
                     <CheckIcon
                       className={cn(
                         "ml-auto h-4 w-4 shrink-0",
-                        option.name === selectedCountry?.name
+                        option.alpha2 === selectedCountry?.alpha2
                           ? "opacity-100"
                           : "opacity-0"
                       )}

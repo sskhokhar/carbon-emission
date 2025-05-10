@@ -27,6 +27,7 @@ import { useElectricityEmissionEstimation } from "@/lib/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { CARBON_RESULT_KEY } from "../home.view";
 import { countries } from "country-data-list";
+import { useState } from "react";
 
 const SUPPORTED_COUNTRIES = [
   "US",
@@ -95,6 +96,8 @@ export default function ElectricityForm({
 }: ElectricityFormProps) {
   const estimateMutation = useElectricityEmissionEstimation();
   const queryClient = useQueryClient();
+  const [selectedCountryObject, setSelectedCountryObject] =
+    useState<Country | null>(null);
 
   const form = useForm<ElectricityFormValues>({
     resolver: zodResolver(electricityFormSchema),
@@ -108,19 +111,29 @@ export default function ElectricityForm({
 
   const hasStateOptions = ["US"];
 
-  const selectedCountry = form.watch("country");
-  const showStateField = hasStateOptions.includes(
-    selectedCountry?.toUpperCase() || ""
-  );
+  const showStateField =
+    selectedCountryObject &&
+    hasStateOptions.includes(selectedCountryObject.alpha2);
+
+  const handleCountryChange = (country: Country) => {
+    setSelectedCountryObject(country);
+
+    form.setValue("country", country.alpha2.toLowerCase(), {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+
+    if (!hasStateOptions.includes(country.alpha2)) {
+      form.setValue("state", "", { shouldValidate: true });
+    }
+  };
 
   const handleSubmit = async (data: ElectricityFormValues) => {
     try {
       const result = await estimateMutation.mutateAsync(data);
-
       queryClient.setQueryData(CARBON_RESULT_KEY, result);
-
       queryClient.invalidateQueries({ queryKey: ["estimationHistory"] });
-
       onSubmit(data);
     } catch (error) {
       console.error("Failed to estimate electricity emissions:", error);
@@ -136,19 +149,12 @@ export default function ElectricityForm({
         <FormField
           control={form.control}
           name="country"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>Country</FormLabel>
               <FormControl>
                 <CountryDropdown
-                  defaultValue={field.value}
-                  onChange={(country: Country) => {
-                    field.onChange(country.alpha2.toLowerCase());
-
-                    if (!hasStateOptions.includes(country.alpha2)) {
-                      form.setValue("state", "");
-                    }
-                  }}
+                  onChange={handleCountryChange}
                   placeholder="Select a country"
                   options={supportedCountryOptions}
                 />
