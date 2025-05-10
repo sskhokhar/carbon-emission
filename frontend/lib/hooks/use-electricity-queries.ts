@@ -5,7 +5,6 @@ import {
   CarbonEstimationResult,
 } from "@/lib/api";
 
-// Hook for estimating electricity emissions
 export function useElectricityEmissionEstimation() {
   return useMutation({
     mutationFn: async (

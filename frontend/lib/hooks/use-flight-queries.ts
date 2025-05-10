@@ -5,7 +5,6 @@ import {
   CarbonEstimationResult,
 } from "@/lib/api";
 
-// Hook for estimating flight emissions
 export function useFlightEmissionEstimation() {
   return useMutation({
     mutationFn: async (

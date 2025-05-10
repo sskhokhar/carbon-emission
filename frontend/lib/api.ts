@@ -1,14 +1,7 @@
-/**
- * API utility for carbon calculation services
- */
-
-// Base URL for the API
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-// Environment check
 const isDevelopment = process.env.NEXT_PUBLIC_ENV === "development";
 
-// Types for the API requests
 export interface VehicleEmissionRequest {
   distance_value: number;
   distance_unit: "mi" | "km";

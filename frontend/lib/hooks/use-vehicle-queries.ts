@@ -7,13 +7,12 @@ import {
   CarbonEstimationResult,
 } from "@/lib/api";
 
-// Hook for fetching vehicle makes
 export function useVehicleMakes() {
   return useQuery({
     queryKey: ["vehicleMakes"],
     queryFn: async () => {
       const response = await getVehicleMakes();
-      // Sort makes alphabetically
+
       return response.sort((a, b) =>
         a.data.attributes.name.localeCompare(b.data.attributes.name)
       );
@@ -21,7 +20,6 @@ export function useVehicleMakes() {
   });
 }
 
-// Hook for fetching vehicle models by make ID
 export function useVehicleModels(makeId: string | null) {
   return useQuery({
     queryKey: ["vehicleModels", makeId],
@@ -29,11 +27,10 @@ export function useVehicleModels(makeId: string | null) {
       if (!makeId) return [];
       return await getVehicleModels(makeId);
     },
-    enabled: !!makeId, // Only run if makeId is provided
+    enabled: !!makeId,
   });
 }
 
-// Hook for estimating vehicle emissions
 export function useVehicleEmissionEstimation() {
   return useMutation({
     mutationFn: async (
