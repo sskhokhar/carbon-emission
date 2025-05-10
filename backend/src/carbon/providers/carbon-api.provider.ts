@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
-  CarbonInterfaceElectricityResponse,
-  CarbonInterfaceVehicleResponse,
-  CarbonInterfaceFlightResponse,
   CarbonEstimationResult,
-  CarbonEmissionProvider,
+  EmissionTypeEnum,
   ElectricityEmissionInput,
   VehicleEmissionInput,
   FlightEmissionInput,
-  EmissionTypeEnum,
   VehicleMakesResponse,
   VehicleModelsResponse,
-} from '../types/carbon.types';
+  CarbonInterfaceElectricityResponse,
+  CarbonInterfaceVehicleResponse,
+  CarbonInterfaceFlightResponse,
+} from '../types';
 
+import { CarbonEmissionProvider } from './provider.interface';
 @Injectable()
 export class CarbonApiProvider implements CarbonEmissionProvider {
   private readonly apiKey: string;
@@ -138,7 +138,6 @@ export class CarbonApiProvider implements CarbonEmissionProvider {
       carbonKg: carbon_kg,
       carbonMt: carbon_mt,
       estimatedAt: new Date(estimated_at),
-      source: this.PROVIDER_NAME,
       emissionType,
       originalInput,
     };

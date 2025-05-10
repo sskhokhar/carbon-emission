@@ -1,11 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CARBON_API_PROVIDER } from '../providers/tokens';
-import {
-  CarbonEstimationResult,
-  CarbonEmissionProvider,
-  ElectricityEmissionInput,
-} from '../types/carbon.types';
-import { ElectricityDto } from '../dto/electricity.dto';
+import { CarbonEstimationResult, ElectricityEmissionInput } from '../types';
+import { CarbonEmissionProvider } from '../providers/provider.interface';
+import { ElectricityDto } from '../dto';
 
 @Injectable()
 export class ElectricityService {

@@ -10,12 +10,12 @@ import {
 } from '@nestjs/common';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { CARBON_API_PROVIDER } from '../providers/tokens';
+import { CarbonEstimationResult } from '../types/emission-types';
+import { CarbonEmissionProvider } from '../providers/provider.interface';
 import {
-  CarbonEmissionProvider,
   VehicleMakesResponse,
   VehicleModelsResponse,
-  CarbonEstimationResult,
-} from '../types/carbon.types';
+} from '../types/api-response-types';
 import { vehicleSchema, VehicleDto } from '../dto/vehicle.dto';
 import { VehicleService } from '../services/vehicle.service';
 import { DatabaseService } from '../../database/database.service';

@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { join } from 'path';
 import * as storage from 'node-persist';
-import { CarbonEstimationResult } from '../carbon/types/carbon.types';
+import { CarbonEstimationResult } from '../carbon/types';
 import * as fs from 'fs';
 
 // Extend estimation with ID and timestamp

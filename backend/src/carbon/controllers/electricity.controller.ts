@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ZodValidationPipe } from 'nestjs-zod';
 import { ElectricityService } from '../services/electricity.service';
-import { CarbonEstimationResult } from '../types/carbon.types';
+import { CarbonEstimationResult } from '../types/emission-types';
 import { electricitySchema, ElectricityDto } from '../dto/electricity.dto';
 import { DatabaseService } from '../../database/database.service';
 
