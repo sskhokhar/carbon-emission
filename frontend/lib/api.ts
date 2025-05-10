@@ -211,3 +211,56 @@ export async function estimateElectricityEmissions(
 
   return result;
 }
+
+/**
+ * Fetch all estimation history records
+ */
+export async function getEstimationHistory(): Promise<EstimationRecord[]> {
+  const endpoint = `/history`;
+  const url = getApiUrl(endpoint);
+  logApiCall("GET", url);
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to fetch estimation history: ${errorText}`);
+  }
+
+  return response.json();
+}
+
+/**
+ * Fetch a specific estimation record by ID
+ */
+export async function getEstimationById(id: string): Promise<EstimationRecord> {
+  const endpoint = `/history/${id}`;
+  const url = getApiUrl(endpoint);
+  logApiCall("GET", url);
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Failed to fetch estimation record: ${errorText}`);
+  }
+
+  return response.json();
+}
+
+// Add the EstimationRecord type
+export interface EstimationRecord {
+  id: string;
+  timestamp: string;
+  estimation: CarbonEstimationResult;
+}

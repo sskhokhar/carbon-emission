@@ -128,6 +128,9 @@ export default function ElectricityForm({
       // Store the result in the React Query cache
       queryClient.setQueryData(CARBON_RESULT_KEY, result);
 
+      // Invalidate the estimation history query to trigger a refetch
+      queryClient.invalidateQueries({ queryKey: ["estimationHistory"] });
+
       onSubmit(data);
     } catch (error) {
       console.error("Failed to estimate electricity emissions:", error);

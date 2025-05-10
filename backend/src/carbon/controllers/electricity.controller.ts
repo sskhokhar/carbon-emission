@@ -9,10 +9,14 @@ import { ZodValidationPipe } from 'nestjs-zod';
 import { ElectricityService } from '../services/electricity.service';
 import { CarbonEstimationResult } from '../types/carbon.types';
 import { electricitySchema, ElectricityDto } from '../dto/electricity.dto';
+import { DatabaseService } from '../../database/database.service';
 
 @Controller('electricity')
 export class ElectricityController {
-  constructor(private readonly electricityService: ElectricityService) {}
+  constructor(
+    private readonly electricityService: ElectricityService,
+    private readonly databaseService: DatabaseService,
+  ) {}
 
   @Post('estimate')
   @UsePipes(new ZodValidationPipe(electricitySchema))
@@ -20,7 +24,12 @@ export class ElectricityController {
     @Body() data: ElectricityDto,
   ): Promise<CarbonEstimationResult> {
     try {
-      return await this.electricityService.estimateEmissions(data);
+      const result = await this.electricityService.estimateEmissions(data);
+
+      // Save the estimation to the database
+      await this.databaseService.saveEstimation(result);
+
+      return result;
     } catch (error) {
       throw new BadRequestException(
         error instanceof Error

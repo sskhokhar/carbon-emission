@@ -6,10 +6,16 @@ import {
   VehicleController,
   ElectricityController,
   FlightController,
+  HistoryController,
 } from './controllers';
 
 @Module({
-  controllers: [VehicleController, ElectricityController, FlightController],
+  controllers: [
+    VehicleController,
+    ElectricityController,
+    FlightController,
+    HistoryController,
+  ],
   providers: [
     CarbonService,
     ElectricityService,

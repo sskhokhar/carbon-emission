@@ -18,6 +18,7 @@ import {
 } from '../types/carbon.types';
 import { vehicleSchema, VehicleDto } from '../dto/vehicle.dto';
 import { VehicleService } from '../services/vehicle.service';
+import { DatabaseService } from '../../database/database.service';
 
 @Controller('vehicle')
 export class VehicleController {
@@ -25,6 +26,7 @@ export class VehicleController {
     @Inject(CARBON_API_PROVIDER)
     private readonly carbonEmissionProvider: CarbonEmissionProvider,
     private readonly vehicleService: VehicleService,
+    private readonly databaseService: DatabaseService,
   ) {}
 
   /**
@@ -70,7 +72,12 @@ export class VehicleController {
     @Body() data: VehicleDto,
   ): Promise<CarbonEstimationResult> {
     try {
-      return await this.vehicleService.estimateEmissions(data);
+      const result = await this.vehicleService.estimateEmissions(data);
+
+      // Save the estimation to the database
+      await this.databaseService.saveEstimation(result);
+
+      return result;
     } catch (error) {
       throw new BadRequestException(
         error instanceof Error

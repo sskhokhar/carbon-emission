@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Leaf } from "lucide-react";
+import { Leaf, Clock, Home } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
+import { Button } from "./ui/button";
 
 export default function Navbar() {
   return (
@@ -13,9 +14,24 @@ export default function Navbar() {
           <span className="font-bold text-xl">CarbonCalc</span>
         </Link>
 
-        <div className="flex items-center">
-          <ThemeToggle />
+        <div className="flex items-center space-x-4">
+          <nav className="hidden md:flex space-x-2">
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/" className="flex items-center space-x-1">
+                <Home className="h-4 w-4" />
+                <span>Calculator</span>
+              </Link>
+            </Button>
+
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/history" className="flex items-center space-x-1">
+                <Clock className="h-4 w-4" />
+                <span>History</span>
+              </Link>
+            </Button>
+          </nav>
         </div>
+        <ThemeToggle />
       </div>
     </header>
   );
