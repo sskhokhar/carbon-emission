@@ -11,9 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Car, Plane, Zap } from "lucide-react";
 import { toast } from "sonner";
-import ElectricityForm from "./forms/ElectricityForm";
-import VehicleForm from "./forms/VehicleForm";
-import FlightForm from "./forms/FlightForm";
+import ElectricityForm from "./components/ElectricityForm";
+import VehicleForm from "./components/VehicleForm";
+import FlightForm from "./components/FlightForm";
 import { CarbonEstimationResult } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
 

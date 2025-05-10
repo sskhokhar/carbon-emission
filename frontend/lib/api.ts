@@ -61,7 +61,6 @@ export interface CarbonEstimationResult {
   carbonKg: number;
   carbonMt: number;
   estimatedAt: Date;
-  source: string;
   emissionType: string;
   originalInput: Record<string, unknown>;
 }
