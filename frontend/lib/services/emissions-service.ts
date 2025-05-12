@@ -1,12 +1,12 @@
 import type {
+  CarbonEstimationResult,
   ElectricityEmissionRequest,
   FlightEmissionRequest,
   VehicleEmissionRequest,
-  CarbonEstimationResult,
   VehicleMake,
   VehicleModel,
 } from "../interfaces";
-import { makeGetRequest, makeEstimationRequest } from "./api-helpers";
+import { makeEstimationRequest,makeGetRequest } from "./api-helpers";
 
 export async function getVehicleMakes(): Promise<VehicleMake[]> {
   return makeGetRequest<VehicleMake[]>("/vehicle/makes");

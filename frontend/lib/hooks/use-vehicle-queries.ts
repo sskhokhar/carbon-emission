@@ -1,6 +1,7 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { getVehicleMakes, getVehicleModels, estimateVehicleEmissions } from "@/lib/services";
-import type { VehicleEmissionRequest, CarbonEstimationResult } from "@/lib/interfaces";
+import { useMutation,useQuery } from "@tanstack/react-query";
+
+import type { CarbonEstimationResult,VehicleEmissionRequest } from "@/lib/interfaces";
+import { estimateVehicleEmissions,getVehicleMakes, getVehicleModels } from "@/lib/services";
 
 export function useVehicleMakes() {
   return useQuery({

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { Progress } from "./ui/progress";
 
 export function CalculationProgress() {
   const [progress, setProgress] = useState(0);

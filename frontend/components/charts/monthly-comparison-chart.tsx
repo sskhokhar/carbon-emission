@@ -1,7 +1,6 @@
 "use client";
 
-import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 import {
   Bar,
   BarChart,
@@ -13,7 +12,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { motion } from "framer-motion";
+
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface MonthlyComparisonChartProps {
   data: any[];

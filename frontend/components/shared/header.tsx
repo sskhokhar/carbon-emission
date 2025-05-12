@@ -1,10 +1,11 @@
 "use client";
 
+import { ArrowLeft,BarChart3 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { Leaf, BarChart3, ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
   currentPage: "home" | "insights";

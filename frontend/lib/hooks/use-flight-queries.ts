@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
+
+import type { CarbonEstimationResult,FlightEmissionRequest } from "@/lib/interfaces";
 import { estimateFlightEmissions } from "@/lib/services";
-import type { FlightEmissionRequest, CarbonEstimationResult } from "@/lib/interfaces";
 
 export function useFlightEmissionEstimation() {
   return useMutation({

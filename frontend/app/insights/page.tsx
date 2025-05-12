@@ -1,5 +1,7 @@
 "use client";
 
+import { Header } from "@/components/shared/header";
+import { InsightsView } from "@/views/insights/insights.view";
 
 export default function Insights() {
   return (

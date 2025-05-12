@@ -1,3 +1,5 @@
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "lucide-react";
 
 export function ReductionTips() {
   return (

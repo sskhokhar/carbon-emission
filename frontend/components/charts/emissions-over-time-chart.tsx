@@ -1,6 +1,5 @@
 "use client";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
+import { motion } from "framer-motion";
 import {
   Area,
   AreaChart,
@@ -12,7 +11,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { motion } from "framer-motion";
+
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface EmissionsOverTimeChartProps {
   data: any[];

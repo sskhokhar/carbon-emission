@@ -1,10 +1,11 @@
 "use client";
 
-import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
+
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface EmissionsBySourceChartProps {
   data: any[];
