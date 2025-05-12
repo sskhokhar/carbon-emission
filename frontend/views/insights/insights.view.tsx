@@ -39,33 +39,7 @@ export function InsightsView() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="flex items-center justify-between mb-8"
-      >
-        <div className="flex items-center gap-3">
-          <motion.div
-            whileHover={{ rotate: 15, scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 300 }}
-            className="h-10 w-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center"
-          >
-            <Leaf className="h-6 w-6 text-green-600 dark:text-green-400" />
-          </motion.div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            Carbon Footprint Insights
-          </h1>
-        </div>
-        <Link href="/">
-          <Button variant="outline" className="flex items-center gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back to Calculator</span>
-          </Button>
-        </Link>
-      </motion.div>
-
+    <>
       <div className="grid grid-cols-1 gap-6">
         <EmissionsAnalytics
           chartData={chartData}
@@ -82,6 +56,6 @@ export function InsightsView() {
           <EmissionBreakdown />
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -161,7 +161,7 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <History className="h-5 w-5 text-green-600" />
+            <History className="h-5 w-5 text-blue-600" />
             Estimations
           </div>
           <ClearHistoryButton onClearHistory={clearHistory} />

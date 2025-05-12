@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Car, Gauge } from "lucide-react";
+import { Car, Gauge, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useVehicleMakes, useVehicleModels } from "@/lib/hooks";
 import { Progress } from "@/components/ui/progress";
@@ -166,6 +166,8 @@ export function VehicleForm({ onCalculate }: VehicleFormProps) {
       title="Vehicle Emissions"
       description="Calculate carbon emissions from vehicle transportation."
       error={error}
+      iconColor="text-blue-600"
+      iconBgColor="bg-blue-100 dark:bg-blue-900"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -363,17 +365,22 @@ export function VehicleForm({ onCalculate }: VehicleFormProps) {
             whileTap={{ scale: 0.98 }}
           >
             <Button
-              className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white transition-all duration-300"
               type="submit"
               disabled={
                 isCalculating ||
                 !form.watch("vehicle_make_id") ||
                 !form.watch("vehicle_model_id")
               }
+              className="w-full mt-6 bg-[#29a7df] hover:bg-[#1d8bbf] text-white transition-all duration-300"
             >
-              {isCalculating
-                ? "Calculating vehicle emissions..."
-                : "Calculate Vehicle Emissions"}
+              {isCalculating ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Calculating...
+                </>
+              ) : (
+                "Calculate Emissions"
+              )}
             </Button>
           </motion.div>
         </form>

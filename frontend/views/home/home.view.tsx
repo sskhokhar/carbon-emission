@@ -160,33 +160,7 @@ function HomeViewContent() {
   }, [router]);
 
   return (
-    <div className="container mx-auto py-6 px-4 sm:px-6 lg:px-8 max-w-7xl">
-      <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Leaf className="h-8 w-8 text-green-600" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-teal-500">
-              Carbon Calculator
-            </span>
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">
-            Measure and track your carbon emissions from various activities
-          </p>
-        </div>
-        <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-2"
-            onClick={navigateToInsights}
-          >
-            <BarChart3 className="h-4 w-4" />
-            <span>View Insights</span>
-          </Button>
-          <ThemeToggle />
-        </div>
-      </header>
-
+    <>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <Tabs
@@ -201,7 +175,7 @@ function HomeViewContent() {
                 className="flex items-center gap-2"
                 data-state={activeTab === "electricity" ? "active" : ""}
               >
-                <Zap className="h-4 w-4" />
+                <Zap className="h-4 w-4 text-yellow-600" />
                 <span className="hidden sm:inline">Electricity</span>
               </TabsTrigger>
               <TabsTrigger
@@ -209,7 +183,7 @@ function HomeViewContent() {
                 className="flex items-center gap-2"
                 data-state={activeTab === "vehicle" ? "active" : ""}
               >
-                <Car className="h-4 w-4" />
+                <Car className="h-4 w-4 text-blue-600" />
                 <span className="hidden sm:inline">Vehicle</span>
               </TabsTrigger>
               <TabsTrigger
@@ -217,7 +191,7 @@ function HomeViewContent() {
                 className="flex items-center gap-2"
                 data-state={activeTab === "flight" ? "active" : ""}
               >
-                <Plane className="h-4 w-4" />
+                <Plane className="h-4 w-4 text-purple-600 " />
                 <span className="hidden sm:inline">Flight</span>
               </TabsTrigger>
             </TabsList>
@@ -252,7 +226,7 @@ function HomeViewContent() {
       />
 
       <Toaster />
-    </div>
+    </>
   );
 }
 

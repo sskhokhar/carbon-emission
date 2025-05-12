@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Zap } from "lucide-react";
+import { Zap, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -142,6 +142,8 @@ export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
       title="Electricity Consumption"
       description="Calculate carbon emissions from electricity usage."
       error={error}
+      iconColor="text-yellow-600"
+      iconBgColor="bg-yellow-100 dark:bg-yellow-900"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -295,13 +297,18 @@ export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
             whileTap={{ scale: 0.98 }}
           >
             <Button
-              className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white transition-all duration-300"
               type="submit"
               disabled={isCalculating}
+              className="w-full mt-6 bg-[#29a7df] hover:bg-[#1d8bbf] text-white transition-all duration-300"
             >
-              {isCalculating
-                ? "Calculating electricity emissions..."
-                : "Calculate Electricity Emissions"}
+              {isCalculating ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Calculating...
+                </>
+              ) : (
+                "Calculate Emissions"
+              )}
             </Button>
           </motion.div>
         </form>

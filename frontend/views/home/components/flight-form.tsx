@@ -19,6 +19,7 @@ import {
   AlertCircle,
   Info,
   Users,
+  Loader2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
@@ -257,6 +258,8 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
       title="Flight Emissions"
       description="Calculate carbon emissions from air travel."
       error={error}
+      iconColor="text-purple-600"
+      iconBgColor="bg-purple-100 dark:bg-purple-900"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -386,7 +389,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                 size="sm"
                 onClick={addFlightLeg}
                 disabled={isCalculating}
-                className="flex items-center gap-1 text-green-600 border-green-200 hover:bg-green-50 dark:text-green-400 dark:border-green-900 dark:hover:bg-green-950"
+                className="flex items-center gap-1 text-[#29a7df] border-[#29a7df] hover:bg-sky-50 dark:text-[#29a7df] dark:border-sky-900 dark:hover:bg-sky-950"
                 type="button"
               >
                 <Plus className="h-4 w-4" /> Add Leg
@@ -440,7 +443,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                             </Badge>
                           )}
                           {leg.validDeparture === true && (
-                            <Badge className="bg-green-500">Valid</Badge>
+                            <Badge className="bg-[#29a7df]">Valid</Badge>
                           )}
                           {leg.validDeparture === false && (
                             <Badge variant="destructive">Invalid</Badge>
@@ -489,7 +492,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                             </Badge>
                           )}
                           {leg.validDestination === true && (
-                            <Badge className="bg-green-500">Valid</Badge>
+                            <Badge className="bg-[#29a7df]">Valid</Badge>
                           )}
                           {leg.validDestination === false && (
                             <Badge variant="destructive">Invalid</Badge>
@@ -530,7 +533,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="mt-2 p-2 bg-green-50 dark:bg-green-900/30 rounded text-sm flex justify-between items-center"
+                        className="mt-2 p-2 bg-sky-50 dark:bg-sky-900/30 rounded text-sm flex justify-between items-center"
                       >
                         <span>Estimated flight distance:</span>
                         <Badge variant="outline" className="font-mono">
@@ -554,7 +557,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                 <span className="text-sm font-medium">
                   Total flight distance:
                 </span>
-                <Badge className="bg-green-600">
+                <Badge className="bg-[#29a7df]">
                   {totalDistance.toLocaleString()} km
                 </Badge>
               </div>
@@ -576,13 +579,18 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
             whileTap={{ scale: 0.98 }}
           >
             <Button
-              className="w-full mt-6 bg-green-600 hover:bg-green-700 text-white transition-all duration-300"
               type="submit"
               disabled={isCalculating || !hasValidAirports}
+              className="w-full mt-6 bg-[#29a7df] hover:bg-[#1d8bbf] text-white transition-all duration-300"
             >
-              {isCalculating
-                ? "Calculating flight emissions..."
-                : "Calculate Flight Emissions"}
+              {isCalculating ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Calculating...
+                </>
+              ) : (
+                "Calculate Emissions"
+              )}
             </Button>
           </motion.div>
         </form>
