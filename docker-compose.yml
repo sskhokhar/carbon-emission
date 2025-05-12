@@ -8,7 +8,7 @@ services:
     environment:
       NODE_ENV: development
       PORT: 3000
-      CARBON_INTERFACE_API: wy0MEVLAfLOFYXUSuBLv1g
+      CARBON_INTERFACE_API:
     networks:
       - app-network
     restart: unless-stopped

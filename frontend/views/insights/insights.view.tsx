@@ -1,11 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Leaf, ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import Link from "next/link";
 import { addDays } from "date-fns";
 import type { DateRange } from "react-day-picker";
 import { generateMockData } from "@/lib/mock-data";
@@ -16,7 +11,6 @@ import { ImpactSummary } from "./components/impact-summary";
 import { EmissionBreakdown } from "./components/emission-breakdown";
 
 export function InsightsView() {
-  const router = useRouter();
   const [chartData, setChartData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [timeRange, setTimeRange] = useState("6m");

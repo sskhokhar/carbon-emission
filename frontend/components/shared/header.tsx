@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
-import { Leaf, BarChart3 } from "lucide-react";
+import { Leaf, BarChart3, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -51,7 +51,7 @@ export function Header({ currentPage }: HeaderProps) {
             className="flex items-center gap-2"
             onClick={navigateToHome}
           >
-            <Leaf className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4" />
             <span>Back to Calculator</span>
           </Button>
         )}

@@ -73,25 +73,25 @@ export function EmissionsAnalytics({
           <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-8">
             <TabsTrigger
               value="overview"
-              className="data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900 transition-all duration-200"
+              className="data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 transition-all duration-200"
             >
               Overview
             </TabsTrigger>
             <TabsTrigger
               value="by-source"
-              className="data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900 transition-all duration-200"
+              className="data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 transition-all duration-200"
             >
               By Source
             </TabsTrigger>
             <TabsTrigger
               value="monthly"
-              className="data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900 transition-all duration-200"
+              className="data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 transition-all duration-200"
             >
               Monthly Comparison
             </TabsTrigger>
             <TabsTrigger
               value="trends"
-              className="data-[state=active]:bg-green-100 dark:data-[state=active]:bg-green-900 transition-all duration-200"
+              className="data-[state=active]:bg-blue-100 dark:data-[state=active]:bg-blue-900 transition-all duration-200"
             >
               Trends
             </TabsTrigger>
