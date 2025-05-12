@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { EstimationRecord } from "@/lib/interfaces/emissions";
 
@@ -20,14 +20,11 @@ export function FormProvider({ children }: { children: ReactNode }) {
   const [isCalculating, setIsCalculating] = useState(false);
   const [calculatedRecord, setCalculatedRecord] = useState<EstimationRecord | undefined>(undefined);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
-  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const handleCalculationSuccess = async (result: any) => {
-    toast({
-      title: "Calculation Complete",
+    toast.success("Calculation Complete", {
       description: `${result.carbonKg.toFixed(2)} kg CO₂ emissions calculated.`,
-      variant: "success",
     });
 
     await queryClient.invalidateQueries({ queryKey: ["estimationHistory"] });
@@ -37,10 +34,8 @@ export function FormProvider({ children }: { children: ReactNode }) {
   };
 
   const handleCalculationError = (error: unknown) => {
-    toast({
-      title: "Calculation Failed",
+    toast.error("Calculation Failed", {
       description: error instanceof Error ? error.message : "Failed to calculate emissions",
-      variant: "destructive",
     });
   };
 

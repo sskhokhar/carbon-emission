@@ -22,7 +22,7 @@ import { ResultsPanel } from "./components/results-panel";
 import { Leaf, BarChart3, Zap, Car, Plane } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { motion } from "framer-motion";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { CalculationProgress } from "@/components/calculation-progress";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -212,8 +212,6 @@ function HomeViewContent() {
         onOpenChange={setDetailsDialogOpen}
         record={calculatedRecord}
       />
-
-      <Toaster />
     </>
   );
 }

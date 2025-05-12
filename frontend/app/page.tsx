@@ -1,7 +1,5 @@
 "use client";
 
-import { HomeView } from "@/views/home/home.view";
-import { Header } from "@/components/shared/header";
 
 export default function Home() {
   return (

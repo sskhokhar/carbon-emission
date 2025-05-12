@@ -11,19 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  PlaneTakeoff,
-  Plus,
-  Trash2,
-  Search,
-  AlertCircle,
-  Info,
-  Users,
-  Loader2,
-} from "lucide-react";
+import { PlaneTakeoff, Plus, Trash2, Search, Info, Users, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { z } from "zod";
 import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Progress } from "@/components/ui/progress";
+
 
 export function CalculationProgress() {
   const [progress, setProgress] = useState(0);
