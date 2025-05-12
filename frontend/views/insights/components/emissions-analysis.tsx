@@ -1,13 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,9 +43,7 @@ export function EmissionsAnalytics({
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <CardTitle>Carbon Emissions Analytics</CardTitle>
-            <CardDescription>
-              Visualize and analyze your carbon footprint over time
-            </CardDescription>
+            <CardDescription>Visualize and analyze your carbon footprint over time</CardDescription>
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
             <Select value={timeRange} onValueChange={setTimeRange}>

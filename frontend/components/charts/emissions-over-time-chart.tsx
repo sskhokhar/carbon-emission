@@ -1,9 +1,5 @@
 "use client";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Area,
@@ -23,10 +19,7 @@ interface EmissionsOverTimeChartProps {
   isLoading: boolean;
 }
 
-export function EmissionsOverTimeChart({
-  data,
-  isLoading,
-}: EmissionsOverTimeChartProps) {
+export function EmissionsOverTimeChart({ data, isLoading }: EmissionsOverTimeChartProps) {
   if (isLoading) {
     return <ChartSkeleton />;
   }
@@ -49,11 +42,7 @@ export function EmissionsOverTimeChart({
               bottom: 30,
             }}
           >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#d4d4d8"
-              strokeOpacity={0.4}
-            />
+            <CartesianGrid strokeDasharray="3 3" stroke="#d4d4d8" strokeOpacity={0.4} />
             <XAxis
               dataKey="date"
               tick={{ fontSize: 12 }}
@@ -73,11 +62,7 @@ export function EmissionsOverTimeChart({
               tickFormatter={(value) => `${value} kg`}
             />
             <Tooltip
-              content={({
-                active,
-                payload,
-                label,
-              }: TooltipProps<number, string>) => {
+              content={({ active, payload, label }: TooltipProps<number, string>) => {
                 if (active && payload && payload.length) {
                   return (
                     <ChartTooltipContent>
@@ -90,31 +75,20 @@ export function EmissionsOverTimeChart({
                       </div>
                       <div className="flex flex-col gap-2 mt-2">
                         {payload.map((entry: any, index: number) => (
-                          <div
-                            key={`tooltip-${index}`}
-                            className="flex items-center gap-2"
-                          >
+                          <div key={`tooltip-${index}`} className="flex items-center gap-2">
                             <div
                               className="w-3 h-3 rounded-full"
                               style={{ backgroundColor: entry.color }}
                             />
-                            <span className="text-xs font-medium">
-                              {entry.name}:
-                            </span>
-                            <span className="text-xs font-bold">
-                              {entry.value} kg CO₂
-                            </span>
+                            <span className="text-xs font-medium">{entry.name}:</span>
+                            <span className="text-xs font-bold">{entry.value} kg CO₂</span>
                           </div>
                         ))}
                         <div className="flex items-center gap-2 mt-1 pt-1 border-t border-gray-200 dark:border-gray-700">
                           <span className="text-xs font-medium">Total:</span>
                           <span className="text-xs font-bold">
                             {payload
-                              .reduce(
-                                (sum: number, entry: any) =>
-                                  sum + (entry.value as number),
-                                0
-                              )
+                              .reduce((sum: number, entry: any) => sum + (entry.value as number), 0)
                               .toFixed(2)}{" "}
                             kg CO₂
                           </span>
@@ -129,9 +103,7 @@ export function EmissionsOverTimeChart({
             <Legend
               verticalAlign="top"
               height={36}
-              formatter={(value) => (
-                <span className="text-xs font-medium">{value}</span>
-              )}
+              formatter={(value) => <span className="text-xs font-medium">{value}</span>}
             />
             <defs>
               <linearGradient id="colorElectricity" x1="0" y1="0" x2="0" y2="1">
@@ -201,10 +173,7 @@ function ChartSkeleton() {
           <div className="h-full flex items-end space-x-2">
             {Array.from({ length: 12 }).map((_, i) => (
               <div key={i} className="flex-1 flex flex-col justify-end">
-                <Skeleton
-                  className="w-full"
-                  style={{ height: `${Math.random() * 70 + 30}%` }}
-                />
+                <Skeleton className="w-full" style={{ height: `${Math.random() * 70 + 30}%` }} />
                 <Skeleton className="h-4 w-full mt-2" />
               </div>
             ))}

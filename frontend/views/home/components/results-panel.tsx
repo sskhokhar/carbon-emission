@@ -16,10 +16,7 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  useClearHistory,
-  useEstimationHistory,
-} from "@/lib/hooks/use-history-queries";
+import { useClearHistory, useEstimationHistory } from "@/lib/hooks/use-history-queries";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { EmissionDetailsDialog } from "./emission-detail-dialog";
@@ -34,15 +31,11 @@ interface ResultsPanelProps {
 export function ResultsPanel({ className }: ResultsPanelProps) {
   const [impactScore, setImpactScore] = useState(0);
   const [showImpactDetails, setShowImpactDetails] = useState(false);
-  const [selectedRecord, setSelectedRecord] = useState<
-    EstimationRecord | undefined
-  >(undefined);
+  const [selectedRecord, setSelectedRecord] = useState<EstimationRecord | undefined>(undefined);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
 
-  const {
-    setCalculatedRecord,
-    setDetailsDialogOpen: setContextDetailsDialogOpen,
-  } = useFormContext();
+  const { setCalculatedRecord, setDetailsDialogOpen: setContextDetailsDialogOpen } =
+    useFormContext();
 
   const { data: historyData, isLoading } = useEstimationHistory();
   const { mutateAsync: clearHistory } = useClearHistory();
@@ -50,8 +43,7 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
   const sortedHistoryData = useMemo(() => {
     if (!historyData) return [];
     return [...historyData].sort(
-      (a, b) =>
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
     );
   }, [historyData]);
 
@@ -116,20 +108,17 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
 
   if (isLoading) {
     return (
-      <Card className="border-0 shadow-lg h-full">
+      <Card className="border-0 shadow-lg h-full dark:bg-[#1e2c40] dark:border dark:border-[#2a3a52]">
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2">
-            <Leaf className="h-5 w-5 text-green-600" />
-            Latest Results
+            <History className="h-5 w-5 text-[#29a7df]" />
+            Estimations
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="p-4 rounded-lg bg-gray-50 dark:bg-gray-900/30"
-              >
+              <div key={i} className="p-4 rounded-lg bg-gray-50 dark:bg-[#172333]">
                 <div className="flex items-center justify-between mb-2">
                   <Skeleton className="h-6 w-24" />
                   <Skeleton className="h-6 w-16" />
@@ -139,7 +128,7 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
               </div>
             ))}
           </div>
-          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800">
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-[#2a3a52]">
             <div className="flex justify-between items-center mb-2">
               <Skeleton className="h-5 w-40" />
               <Skeleton className="h-5 w-24" />
@@ -157,14 +146,18 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
   }
 
   return (
-    <Card className={`border-0 shadow-lg h-full ${className || ""}`}>
+    <Card
+      className={`border-0 shadow-lg h-full dark:bg-[#1e2c40] dark:border dark:border-[#2a3a52] ${
+        className || ""
+      }`}
+    >
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <History className="h-5 w-5 text-blue-600" />
+            <History className="h-5 w-5 text-[#29a7df]" />
             Estimations
           </div>
-          <ClearHistoryButton onClearHistory={clearHistory} />
+          {displayHistory.length > 0 && <ClearHistoryButton onClearHistory={clearHistory} />}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -178,8 +171,8 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
                 transition={{ duration: 0.3, delay: index * 0.1 }}
                 className={`p-4 rounded-lg ${
                   index === 0
-                    ? "bg-green-50 dark:bg-green-900/30 border-2 border-green-200 dark:border-green-800"
-                    : "bg-white dark:bg-gray-950"
+                    ? "bg-sky-50 dark:bg-[#172333] border-2 border-sky-200 dark:border-[#2a3a52]"
+                    : "bg-white dark:bg-[#172333]"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -209,7 +202,7 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
                         stiffness: 500,
                         delay: 0.2,
                       }}
-                      className="text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 px-2 py-1 rounded-full"
+                      className="text-xs font-medium bg-sky-100 text-sky-800 dark:bg-sky-900/30 dark:text-sky-300 px-2 py-1 rounded-full"
                     >
                       Latest
                     </motion.span>
@@ -224,9 +217,7 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
                   <span className="text-2xl font-bold">
                     {result.estimation.carbonKg.toFixed(2)}
                   </span>
-                  <span className="text-sm text-gray-500 dark:text-gray-400 mb-0.5">
-                    kg CO₂
-                  </span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400 mb-0.5">kg CO₂</span>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -246,10 +237,8 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
                     className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-800"
                   >
                     <div className="flex justify-between items-center text-xs">
-                      <span className="text-gray-500 dark:text-gray-400">
-                        Compared to average:
-                      </span>
-                      <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
+                      <span className="text-gray-500 dark:text-gray-400">Compared to average:</span>
+                      <div className="flex items-center gap-1 text-[#29a7df] dark:text-[#29a7df]">
                         <TrendingDown className="h-3 w-3" />
                         <span>35% lower</span>
                       </div>
@@ -261,13 +250,12 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center h-64 text-center">
-            <Leaf className="h-12 w-12 text-gray-300 dark:text-gray-600 mb-4" />
+            <Leaf className="h-12 w-12 text-[#29a7df] opacity-30 dark:opacity-20 mb-4" />
             <h3 className="text-lg font-medium text-gray-500 dark:text-gray-400">
               No emissions calculated yet
             </h3>
             <p className="text-sm text-gray-400 dark:text-gray-500 max-w-xs mt-2">
-              Use the calculators to estimate your carbon emissions from various
-              activities.
+              Use the calculators to estimate your carbon emissions from various activities.
             </p>
           </div>
         )}
@@ -292,7 +280,7 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
             <div className="space-y-2">
               <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                 <motion.div
-                  className="bg-green-600 h-2.5 rounded-full"
+                  className="bg-[#29a7df] h-2.5 rounded-full"
                   initial={{ width: "0%" }}
                   animate={{ width: `${impactScore}%` }}
                   transition={{ duration: 0.8, ease: "easeOut" }}
@@ -305,8 +293,7 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
               </div>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
-              Your carbon footprint is 35% lower than the average person in your
-              region.
+              Your carbon footprint is 35% lower than the average person in your region.
             </p>
 
             {showImpactDetails && (
@@ -340,11 +327,11 @@ export function ResultsPanel({ className }: ResultsPanelProps) {
                 </div>
                 <div className="pt-2 text-xs text-gray-500 dark:text-gray-400">
                   <p className="flex items-center gap-1">
-                    <TrendingDown className="h-3 w-3 text-green-500" />
+                    <TrendingDown className="h-3 w-3 text-[#29a7df]" />
                     <span>Your electricity usage is 25% below average</span>
                   </p>
                   <p className="flex items-center gap-1 mt-1">
-                    <TrendingDown className="h-3 w-3 text-green-500" />
+                    <TrendingDown className="h-3 w-3 text-[#29a7df]" />
                     <span>Your air travel is 10% below average</span>
                   </p>
                 </div>

@@ -42,10 +42,7 @@ export const vehicleEmissionSchema = z.object({
 export type VehicleEmissionFormValues = z.infer<typeof vehicleEmissionSchema>;
 
 interface VehicleFormProps {
-  onCalculate: (
-    formData: VehicleEmissionFormValues,
-    details: string
-  ) => Promise<any>;
+  onCalculate: (formData: VehicleEmissionFormValues, details: string) => Promise<any>;
 }
 
 export function VehicleForm({ onCalculate }: VehicleFormProps) {
@@ -128,12 +125,11 @@ export function VehicleForm({ onCalculate }: VehicleFormProps) {
 
       try {
         const selectedMake =
-          vehicleMakes?.find((make) => make.data.id === data.vehicle_make_id)
-            ?.data.attributes.name || "";
+          vehicleMakes?.find((make) => make.data.id === data.vehicle_make_id)?.data.attributes
+            .name || "";
         const selectedModel =
-          vehicleModels?.find(
-            (model) => model.data.id === data.vehicle_model_id
-          )?.data.attributes.name || "";
+          vehicleModels?.find((model) => model.data.id === data.vehicle_model_id)?.data.attributes
+            .name || "";
 
         const details = `${data.distance_value} ${data.distance_unit} in ${selectedMake} ${selectedModel}`;
 
@@ -144,11 +140,7 @@ export function VehicleForm({ onCalculate }: VehicleFormProps) {
           setEfficiency(0);
         }
       } catch (error) {
-        setError(
-          error instanceof Error
-            ? error.message
-            : "Failed to calculate emissions"
-        );
+        setError(error instanceof Error ? error.message : "Failed to calculate emissions");
       }
     },
     [form, onCalculate, vehicleMakes, vehicleModels]
@@ -192,9 +184,7 @@ export function VehicleForm({ onCalculate }: VehicleFormProps) {
                       disabled={isCalculating}
                       className="transition-all duration-200"
                       {...field}
-                      onChange={(e) =>
-                        field.onChange(parseFloat(e.target.value) || "")
-                      }
+                      onChange={(e) => field.onChange(parseFloat(e.target.value) || "")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -297,14 +287,10 @@ export function VehicleForm({ onCalculate }: VehicleFormProps) {
                         !form.watch("vehicle_make_id")
                           ? "Select vehicle make first"
                           : isLoadingModels
-                          ? "Loading models..."
-                          : "Select vehicle model"
+                            ? "Loading models..."
+                            : "Select vehicle model"
                       }
-                      disabled={
-                        isCalculating ||
-                        !form.watch("vehicle_make_id") ||
-                        isLoadingModels
-                      }
+                      disabled={isCalculating || !form.watch("vehicle_make_id") || isLoadingModels}
                     />
                   </FormControl>
                   <FormMessage />
@@ -325,17 +311,15 @@ export function VehicleForm({ onCalculate }: VehicleFormProps) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Gauge className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm font-medium">
-                    Fuel Efficiency Rating
-                  </span>
+                  <span className="text-sm font-medium">Fuel Efficiency Rating</span>
                 </div>
                 <span
                   className={`text-sm font-medium ${
                     efficiency < 30
                       ? "text-red-500"
                       : efficiency < 70
-                      ? "text-yellow-500"
-                      : "text-green-500"
+                        ? "text-yellow-500"
+                        : "text-green-500"
                   }`}
                 >
                   {efficiency}%
@@ -351,8 +335,8 @@ export function VehicleForm({ onCalculate }: VehicleFormProps) {
                 {efficiency < 30
                   ? "Low efficiency. Consider a more fuel-efficient vehicle for future trips."
                   : efficiency < 70
-                  ? "Average efficiency. Regular maintenance can help improve fuel economy."
-                  : "Good efficiency. This vehicle has relatively low emissions compared to others in its class."}
+                    ? "Average efficiency. Regular maintenance can help improve fuel economy."
+                    : "Good efficiency. This vehicle has relatively low emissions compared to others in its class."}
               </p>
             </motion.div>
           )}
@@ -367,9 +351,7 @@ export function VehicleForm({ onCalculate }: VehicleFormProps) {
             <Button
               type="submit"
               disabled={
-                isCalculating ||
-                !form.watch("vehicle_make_id") ||
-                !form.watch("vehicle_model_id")
+                isCalculating || !form.watch("vehicle_make_id") || !form.watch("vehicle_model_id")
               }
               className="w-full mt-6 bg-[#29a7df] hover:bg-[#1d8bbf] text-white transition-all duration-300"
             >

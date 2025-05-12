@@ -20,10 +20,7 @@ interface MonthlyComparisonChartProps {
   isLoading: boolean;
 }
 
-export function MonthlyComparisonChart({
-  data,
-  isLoading,
-}: MonthlyComparisonChartProps) {
+export function MonthlyComparisonChart({ data, isLoading }: MonthlyComparisonChartProps) {
   if (isLoading) {
     return <ChartSkeleton />;
   }
@@ -55,12 +52,7 @@ export function MonthlyComparisonChart({
               strokeOpacity={0.4}
               vertical={false}
             />
-            <XAxis
-              dataKey="month"
-              tick={{ fontSize: 12 }}
-              tickLine={false}
-              axisLine={false}
-            />
+            <XAxis dataKey="month" tick={{ fontSize: 12 }} tickLine={false} axisLine={false} />
             <YAxis
               tick={{ fontSize: 12 }}
               tickLine={false}
@@ -68,42 +60,27 @@ export function MonthlyComparisonChart({
               tickFormatter={(value) => `${value} kg`}
             />
             <Tooltip
-              content={({
-                active,
-                payload,
-                label,
-              }: TooltipProps<number, string>) => {
+              content={({ active, payload, label }: TooltipProps<number, string>) => {
                 if (active && payload && payload.length) {
                   return (
                     <ChartTooltipContent>
                       <div className="font-medium text-sm">{label}</div>
                       <div className="flex flex-col gap-2 mt-2">
                         {payload.map((entry: any, index: number) => (
-                          <div
-                            key={`tooltip-${index}`}
-                            className="flex items-center gap-2"
-                          >
+                          <div key={`tooltip-${index}`} className="flex items-center gap-2">
                             <div
                               className="w-3 h-3 rounded-full"
                               style={{ backgroundColor: entry.color }}
                             />
-                            <span className="text-xs font-medium">
-                              {entry.name}:
-                            </span>
-                            <span className="text-xs font-bold">
-                              {entry.value} kg CO₂
-                            </span>
+                            <span className="text-xs font-medium">{entry.name}:</span>
+                            <span className="text-xs font-bold">{entry.value} kg CO₂</span>
                           </div>
                         ))}
                         <div className="flex items-center gap-2 mt-1 pt-1 border-t border-gray-200 dark:border-gray-700">
                           <span className="text-xs font-medium">Total:</span>
                           <span className="text-xs font-bold">
                             {payload
-                              .reduce(
-                                (sum: number, entry: any) =>
-                                  sum + (entry.value as number),
-                                0
-                              )
+                              .reduce((sum: number, entry: any) => sum + (entry.value as number), 0)
                               .toFixed(2)}{" "}
                             kg CO₂
                           </span>
@@ -118,9 +95,7 @@ export function MonthlyComparisonChart({
             <Legend
               verticalAlign="top"
               height={36}
-              formatter={(value) => (
-                <span className="text-xs font-medium">{value}</span>
-              )}
+              formatter={(value) => <span className="text-xs font-medium">{value}</span>}
             />
             <Bar
               dataKey="electricity"
@@ -200,18 +175,9 @@ function ChartSkeleton() {
         <div className="col-span-11 flex items-end space-x-6">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="flex-1 flex items-end space-x-1">
-              <Skeleton
-                className="w-full"
-                style={{ height: `${Math.random() * 70 + 30}%` }}
-              />
-              <Skeleton
-                className="w-full"
-                style={{ height: `${Math.random() * 70 + 30}%` }}
-              />
-              <Skeleton
-                className="w-full"
-                style={{ height: `${Math.random() * 70 + 30}%` }}
-              />
+              <Skeleton className="w-full" style={{ height: `${Math.random() * 70 + 30}%` }} />
+              <Skeleton className="w-full" style={{ height: `${Math.random() * 70 + 30}%` }} />
+              <Skeleton className="w-full" style={{ height: `${Math.random() * 70 + 30}%` }} />
             </div>
           ))}
         </div>

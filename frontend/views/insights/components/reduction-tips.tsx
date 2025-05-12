@@ -14,8 +14,7 @@ export function ReductionTips() {
               Electricity
             </Badge>
             <span className="text-sm">
-              Switch to LED bulbs to reduce electricity consumption by up to
-              80%.
+              Switch to LED bulbs to reduce electricity consumption by up to 80%.
             </span>
           </li>
           <li className="flex items-start gap-2">
@@ -31,8 +30,7 @@ export function ReductionTips() {
               Flight
             </Badge>
             <span className="text-sm">
-              Offset your flight emissions through verified carbon offset
-              programs.
+              Offset your flight emissions through verified carbon offset programs.
             </span>
           </li>
         </ul>

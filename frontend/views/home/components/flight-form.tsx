@@ -48,10 +48,7 @@ const flightLegSchema = z.object({
 });
 
 export const flightEmissionSchema = z.object({
-  passengers: z
-    .number()
-    .int()
-    .positive("Number of passengers must be positive"),
+  passengers: z.number().int().positive("Number of passengers must be positive"),
   legs: z.array(flightLegSchema).min(1, "At least one flight leg is required"),
   cabin_class: z
     .enum(["economy", "premium", "business", "first"], {
@@ -64,19 +61,14 @@ export const flightEmissionSchema = z.object({
 export type FlightEmissionFormValues = z.infer<typeof flightEmissionSchema>;
 
 interface FlightFormProps {
-  onCalculate: (
-    formData: FlightEmissionFormValues,
-    details: string
-  ) => Promise<any>;
+  onCalculate: (formData: FlightEmissionFormValues, details: string) => Promise<any>;
 }
 
 export function FlightForm({ onCalculate }: FlightFormProps) {
   const { isCalculating } = useFormContext();
   const [totalDistance, setTotalDistance] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [validatingAirports, setValidatingAirports] = useState<
-    Record<string, boolean>
-  >({});
+  const [validatingAirports, setValidatingAirports] = useState<Record<string, boolean>>({});
 
   const form = useForm<FlightEmissionFormValues>({
     resolver: zodResolver(flightEmissionSchema),
@@ -122,11 +114,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
   );
 
   const validateAirport = useCallback(
-    (
-      index: number,
-      field: "departure_airport" | "destination_airport",
-      value: string
-    ) => {
+    (index: number, field: "departure_airport" | "destination_airport", value: string) => {
       const fieldId = `${index}-${field}`;
 
       setValidatingAirports((prev) => ({ ...prev, [fieldId]: true }));
@@ -135,11 +123,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
         const isValid = /^[A-Z]{3}$/.test(value.toUpperCase());
 
         form.setValue(
-          `legs.${index}.${
-            field === "departure_airport"
-              ? "validDeparture"
-              : "validDestination"
-          }`,
+          `legs.${index}.${field === "departure_airport" ? "validDeparture" : "validDestination"}`,
           isValid
         );
 
@@ -175,18 +159,12 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
   );
 
   const handleAirportChange = useCallback(
-    (
-      index: number,
-      field: "departure_airport" | "destination_airport",
-      value: string
-    ) => {
+    (index: number, field: "departure_airport" | "destination_airport", value: string) => {
       const upperValue = value.toUpperCase();
 
       form.setValue(`legs.${index}.${field}`, upperValue);
       form.setValue(
-        `legs.${index}.${
-          field === "departure_airport" ? "validDeparture" : "validDestination"
-        }`,
+        `legs.${index}.${field === "departure_airport" ? "validDeparture" : "validDestination"}`,
         undefined
       );
 
@@ -221,11 +199,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
           setTotalDistance(0);
         }
       } catch (error) {
-        setError(
-          error instanceof Error
-            ? error.message
-            : "Failed to calculate emissions"
-        );
+        setError(error instanceof Error ? error.message : "Failed to calculate emissions");
       }
     },
     [form, onCalculate]
@@ -302,8 +276,8 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
             />
 
             <p className="text-xs text-gray-400 dark:text-gray-400">
-              <Info className="h-4 w-4 inline-block mr-1" /> Higher cabin
-              classes have more space and thus higher emissions per passenger.
+              <Info className="h-4 w-4 inline-block mr-1" /> Higher cabin classes have more space
+              and thus higher emissions per passenger.
             </p>
           </motion.div>
 
@@ -330,9 +304,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                       disabled={isCalculating}
                       className="w-full"
                       {...field}
-                      onChange={(e) =>
-                        field.onChange(parseInt(e.target.value) || 1)
-                      }
+                      onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
                     />
                   </FormControl>
                   <FormMessage />
@@ -360,7 +332,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                       checked={field.value}
                       onCheckedChange={field.onChange}
                       disabled={isCalculating}
-                      className="h-4 w-4 border-gray-300 rounded text-green-600 focus:ring-green-600"
+                      className="h-4 w-4 border-gray-300 rounded text-[#29a7df] focus:ring-[#29a7df]"
                     />
                   </FormControl>
                   <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -435,8 +407,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                           htmlFor={`departure-${index}`}
                           className="flex items-center gap-2"
                         >
-                          Departure Airport{" "}
-                          <span className="text-red-500 ml-1">*</span>
+                          Departure Airport <span className="text-red-500 ml-1">*</span>
                           {validatingAirports[`${index}-departure_airport`] && (
                             <Badge variant="outline" className="animate-pulse">
                               Checking...
@@ -455,11 +426,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                             placeholder="Enter airport code (e.g., NYC, london)"
                             value={leg.departure_airport || ""}
                             onChange={(e) =>
-                              handleAirportChange(
-                                index,
-                                "departure_airport",
-                                e.target.value
-                              )
+                              handleAirportChange(index, "departure_airport", e.target.value)
                             }
                             disabled={isCalculating}
                             maxLength={3}
@@ -467,8 +434,8 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                               leg.validDeparture === false
                                 ? "border-red-500 focus-visible:ring-red-500"
                                 : leg.validDeparture === true
-                                ? "border-green-500 focus-visible:ring-green-500"
-                                : ""
+                                  ? "border-[#29a7df] focus-visible:ring-[#29a7df]"
+                                  : ""
                             }`}
                           />
                           {validatingAirports[`${index}-departure_airport`] && (
@@ -482,11 +449,8 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                           htmlFor={`destination-${index}`}
                           className="flex items-center gap-2"
                         >
-                          Destination Airport{" "}
-                          <span className="text-red-500 ml-1">*</span>
-                          {validatingAirports[
-                            `${index}-destination_airport`
-                          ] && (
+                          Destination Airport <span className="text-red-500 ml-1">*</span>
+                          {validatingAirports[`${index}-destination_airport`] && (
                             <Badge variant="outline" className="animate-pulse">
                               Checking...
                             </Badge>
@@ -504,11 +468,7 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                             placeholder="Enter airport code (e.g., LAX, paris)"
                             value={leg.destination_airport || ""}
                             onChange={(e) =>
-                              handleAirportChange(
-                                index,
-                                "destination_airport",
-                                e.target.value
-                              )
+                              handleAirportChange(index, "destination_airport", e.target.value)
                             }
                             disabled={isCalculating}
                             maxLength={3}
@@ -516,13 +476,11 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
                               leg.validDestination === false
                                 ? "border-red-500 focus-visible:ring-red-500"
                                 : leg.validDestination === true
-                                ? "border-green-500 focus-visible:ring-green-500"
-                                : ""
+                                  ? "border-[#29a7df] focus-visible:ring-[#29a7df]"
+                                  : ""
                             }`}
                           />
-                          {validatingAirports[
-                            `${index}-destination_airport`
-                          ] && (
+                          {validatingAirports[`${index}-destination_airport`] && (
                             <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 animate-pulse" />
                           )}
                         </div>
@@ -554,19 +512,15 @@ export function FlightForm({ onCalculate }: FlightFormProps) {
               className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg mt-2"
             >
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium">
-                  Total flight distance:
-                </span>
-                <Badge className="bg-[#29a7df]">
-                  {totalDistance.toLocaleString()} km
-                </Badge>
+                <span className="text-sm font-medium">Total flight distance:</span>
+                <Badge className="bg-[#29a7df]">{totalDistance.toLocaleString()} km</Badge>
               </div>
               <p className="text-xs mt-2 text-gray-500 dark:text-gray-400">
                 {totalDistance > 10000
                   ? "Long-haul flights have a significant carbon impact. Consider carbon offsets."
                   : totalDistance > 3000
-                  ? "Medium-distance flights. Look into more sustainable travel options when possible."
-                  : "Shorter flights. For future trips, consider train travel for similar distances."}
+                    ? "Medium-distance flights. Look into more sustainable travel options when possible."
+                    : "Shorter flights. For future trips, consider train travel for similar distances."}
               </p>
             </motion.div>
           )}

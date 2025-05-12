@@ -1,11 +1,7 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const isDevelopment = process.env.NEXT_PUBLIC_ENV === "development" || true;
 
-export const logApiCall = (
-  method: string,
-  endpoint: string,
-  data?: unknown
-) => {
+export const logApiCall = (method: string, endpoint: string, data?: unknown) => {
   if (isDevelopment) {
     console.log(`🔽 API ${method} ${endpoint}`, data ? data : "");
   }
@@ -48,10 +44,7 @@ export async function makeDeleteRequest(endpoint: string): Promise<void> {
   }
 }
 
-export async function makeEstimationRequest<T, R>(
-  endpoint: string,
-  data: T
-): Promise<R> {
+export async function makeEstimationRequest<T, R>(endpoint: string, data: T): Promise<R> {
   const url = getApiUrl(endpoint);
   logApiCall("POST", url, data);
 

@@ -18,9 +18,7 @@ const FormContext = createContext<FormContextType | undefined>(undefined);
 
 export function FormProvider({ children }: { children: ReactNode }) {
   const [isCalculating, setIsCalculating] = useState(false);
-  const [calculatedRecord, setCalculatedRecord] = useState<
-    EstimationRecord | undefined
-  >(undefined);
+  const [calculatedRecord, setCalculatedRecord] = useState<EstimationRecord | undefined>(undefined);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -41,10 +39,7 @@ export function FormProvider({ children }: { children: ReactNode }) {
   const handleCalculationError = (error: unknown) => {
     toast({
       title: "Calculation Failed",
-      description:
-        error instanceof Error
-          ? error.message
-          : "Failed to calculate emissions",
+      description: error instanceof Error ? error.message : "Failed to calculate emissions",
       variant: "destructive",
     });
   };

@@ -20,10 +20,7 @@ interface EmissionsTrendChartProps {
   isLoading: boolean;
 }
 
-export function EmissionsTrendChart({
-  data,
-  isLoading,
-}: EmissionsTrendChartProps) {
+export function EmissionsTrendChart({ data, isLoading }: EmissionsTrendChartProps) {
   if (isLoading) {
     return <ChartSkeleton />;
   }
@@ -49,11 +46,7 @@ export function EmissionsTrendChart({
               bottom: 30,
             }}
           >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              stroke="#d4d4d8"
-              strokeOpacity={0.4}
-            />
+            <CartesianGrid strokeDasharray="3 3" stroke="#d4d4d8" strokeOpacity={0.4} />
             <XAxis
               dataKey="date"
               tick={{ fontSize: 12 }}
@@ -73,11 +66,7 @@ export function EmissionsTrendChart({
               tickFormatter={(value) => `${value} kg`}
             />
             <Tooltip
-              content={({
-                active,
-                payload,
-                label,
-              }: TooltipProps<number, string>) => {
+              content={({ active, payload, label }: TooltipProps<number, string>) => {
                 if (active && payload && payload.length) {
                   return (
                     <ChartTooltipContent>
@@ -90,20 +79,13 @@ export function EmissionsTrendChart({
                       </div>
                       <div className="flex flex-col gap-2 mt-2">
                         {payload.map((entry: any, index: number) => (
-                          <div
-                            key={`tooltip-${index}`}
-                            className="flex items-center gap-2"
-                          >
+                          <div key={`tooltip-${index}`} className="flex items-center gap-2">
                             <div
                               className="w-3 h-3 rounded-full"
                               style={{ backgroundColor: entry.color }}
                             />
-                            <span className="text-xs font-medium">
-                              {entry.name}:
-                            </span>
-                            <span className="text-xs font-bold">
-                              {entry.value} kg CO₂
-                            </span>
+                            <span className="text-xs font-medium">{entry.name}:</span>
+                            <span className="text-xs font-bold">{entry.value} kg CO₂</span>
                           </div>
                         ))}
                       </div>
@@ -116,9 +98,7 @@ export function EmissionsTrendChart({
             <Legend
               verticalAlign="top"
               height={36}
-              formatter={(value) => (
-                <span className="text-xs font-medium">{value}</span>
-              )}
+              formatter={(value) => <span className="text-xs font-medium">{value}</span>}
             />
             <Line
               type="monotone"
@@ -176,9 +156,7 @@ function processTrendData(data: any[]) {
   });
 
   // Calculate average
-  const average =
-    processedData.reduce((sum, entry) => sum + entry.total, 0) /
-    processedData.length;
+  const average = processedData.reduce((sum, entry) => sum + entry.total, 0) / processedData.length;
 
   // Simple linear regression for trend line
   const n = processedData.length;

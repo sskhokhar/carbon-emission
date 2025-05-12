@@ -22,8 +22,8 @@ export function FormLayout({
   description,
   error,
   children,
-  iconColor = "text-green-600 dark:text-green-400",
-  iconBgColor = "bg-green-100 dark:bg-green-900",
+  iconColor = "text-[#29a7df] dark:text-[#29a7df]",
+  iconBgColor = "bg-sky-100 dark:bg-sky-900/30",
 }: FormLayoutProps) {
   return (
     <motion.div
@@ -46,9 +46,7 @@ export function FormLayout({
         </motion.div>
         <div>
           <h3 className="text-lg font-semibold">{title}</h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {description}
-          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{description}</p>
         </div>
       </motion.div>
 

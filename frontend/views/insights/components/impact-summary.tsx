@@ -14,10 +14,7 @@ export function ImpactSummary() {
               <span className="font-medium">1,245 kg CO₂</span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-              <div
-                className="bg-green-600 h-2 rounded-full"
-                style={{ width: "65%" }}
-              ></div>
+              <div className="bg-green-600 h-2 rounded-full" style={{ width: "65%" }}></div>
             </div>
             <p className="text-xs mt-1 text-gray-500">35% below average</p>
           </div>
@@ -28,14 +25,9 @@ export function ImpactSummary() {
               <span className="font-medium">670 kg CO₂</span>
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-              <div
-                className="bg-green-600 h-2 rounded-full"
-                style={{ width: "35%" }}
-              ></div>
+              <div className="bg-green-600 h-2 rounded-full" style={{ width: "35%" }}></div>
             </div>
-            <p className="text-xs mt-1 text-gray-500">
-              Equivalent to planting 11 trees
-            </p>
+            <p className="text-xs mt-1 text-gray-500">Equivalent to planting 11 trees</p>
           </div>
         </div>
       </CardContent>

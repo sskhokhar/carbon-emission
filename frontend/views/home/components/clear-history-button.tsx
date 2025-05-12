@@ -19,9 +19,7 @@ interface ClearHistoryButtonProps {
   onClearHistory: () => Promise<void>;
 }
 
-export function ClearHistoryButton({
-  onClearHistory,
-}: ClearHistoryButtonProps) {
+export function ClearHistoryButton({ onClearHistory }: ClearHistoryButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClear = async () => {
@@ -32,11 +30,7 @@ export function ClearHistoryButton({
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="destructive"
-          size="sm"
-          className="flex items-center gap-2"
-        >
+        <Button variant="destructive" size="sm" className="flex items-center gap-2">
           <Trash className="h-4 w-4" />
           Clear
         </Button>
@@ -45,8 +39,7 @@ export function ClearHistoryButton({
         <AlertDialogHeader>
           <AlertDialogTitle>Clear History</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to clear all calculation history? This action
-            cannot be undone.
+            Are you sure you want to clear all calculation history? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

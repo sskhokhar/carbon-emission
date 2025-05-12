@@ -2,15 +2,7 @@
 
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  TooltipProps,
-} from "recharts";
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, TooltipProps } from "recharts";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -19,10 +11,7 @@ interface EmissionsBySourceChartProps {
   isLoading: boolean;
 }
 
-export function EmissionsBySourceChart({
-  data,
-  isLoading,
-}: EmissionsBySourceChartProps) {
+export function EmissionsBySourceChart({ data, isLoading }: EmissionsBySourceChartProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   if (isLoading) {
@@ -81,15 +70,7 @@ export function EmissionsBySourceChart({
               animationEasing="ease-out"
               onMouseEnter={onPieEnter}
               onMouseLeave={onPieLeave}
-              label={({
-                cx,
-                cy,
-                midAngle,
-                innerRadius,
-                outerRadius,
-                percent,
-                index,
-              }) => {
+              label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
                 const RADIAN = Math.PI / 180;
                 const radius = 25 + innerRadius + (outerRadius - innerRadius);
                 const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -113,9 +94,7 @@ export function EmissionsBySourceChart({
                 <Cell
                   key={`cell-${index}`}
                   fill={entry.color}
-                  opacity={
-                    activeIndex === null || activeIndex === index ? 1 : 0.5
-                  }
+                  opacity={activeIndex === null || activeIndex === index ? 1 : 0.5}
                   strokeWidth={activeIndex === index ? 2 : 1}
                 />
               ))}
@@ -130,9 +109,7 @@ export function EmissionsBySourceChart({
                       <div className="flex flex-col gap-1 mt-2">
                         <div className="flex items-center justify-between gap-8">
                           <span className="text-xs">Total Emissions:</span>
-                          <span className="text-xs font-bold">
-                            {data.value.toFixed(2)} kg CO₂
-                          </span>
+                          <span className="text-xs font-bold">{data.value.toFixed(2)} kg CO₂</span>
                         </div>
                         <div className="flex items-center justify-between gap-8">
                           <span className="text-xs">Percentage:</span>

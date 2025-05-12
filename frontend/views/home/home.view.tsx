@@ -2,13 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ElectricityForm,
   ElectricityEmissionFormValues,
@@ -51,9 +45,7 @@ export type CalculationResult = {
 function HomeViewContent() {
   const [activeTab, setActiveTab] = useState("electricity");
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
-  const [calculatedRecord, setCalculatedRecord] = useState<
-    EstimationRecord | undefined
-  >(undefined);
+  const [calculatedRecord, setCalculatedRecord] = useState<EstimationRecord | undefined>(undefined);
   const router = useRouter();
 
   const {
@@ -70,11 +62,7 @@ function HomeViewContent() {
   const flightMutation = useFlightEmissionEstimation();
 
   const createCalculationHandler = useCallback(
-    (
-      mutation: any,
-      schema: any,
-      emissionType: "electricity" | "vehicle" | "flight"
-    ) => {
+    (mutation: any, schema: any, emissionType: "electricity" | "vehicle" | "flight") => {
       return async (formData: any, formattedDetails: string) => {
         setIsCalculating(true);
 
@@ -196,7 +184,7 @@ function HomeViewContent() {
               </TabsTrigger>
             </TabsList>
 
-            <Card className="border-0 shadow-lg">
+            <Card className="border-0 shadow-lg dark:bg-[#1e2c40] dark:border dark:border-[#2a3a52]">
               <CardContent className="p-6">
                 <TabsContent value="electricity" className="mt-0">
                   <ElectricityForm onCalculate={handleCalculateElectricity} />

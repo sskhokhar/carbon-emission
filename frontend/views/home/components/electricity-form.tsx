@@ -36,15 +36,10 @@ export const electricityEmissionSchema = z.object({
   }),
 });
 
-export type ElectricityEmissionFormValues = z.infer<
-  typeof electricityEmissionSchema
->;
+export type ElectricityEmissionFormValues = z.infer<typeof electricityEmissionSchema>;
 
 interface ElectricityFormProps {
-  onCalculate: (
-    formData: ElectricityEmissionFormValues,
-    details: string
-  ) => Promise<any>;
+  onCalculate: (formData: ElectricityEmissionFormValues, details: string) => Promise<any>;
 }
 
 export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
@@ -106,12 +101,9 @@ export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
       setError(null);
 
       try {
-        const details = `${
-          data.electricity_value
-        } ${data.electricity_unit.toUpperCase()} in ${
-          SUPPORTED_COUNTRIES.find(
-            (c) => c.code.toLowerCase() === data.country.toLowerCase()
-          )?.name || data.country.toUpperCase()
+        const details = `${data.electricity_value} ${data.electricity_unit.toUpperCase()} in ${
+          SUPPORTED_COUNTRIES.find((c) => c.code.toLowerCase() === data.country.toLowerCase())
+            ?.name || data.country.toUpperCase()
         }`;
 
         const result = await onCalculate(data, details);
@@ -120,20 +112,14 @@ export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
           form.reset();
         }
       } catch (error) {
-        setError(
-          error instanceof Error
-            ? error.message
-            : "Failed to calculate emissions"
-        );
+        setError(error instanceof Error ? error.message : "Failed to calculate emissions");
       }
     },
     [SUPPORTED_COUNTRIES, form, onCalculate]
   );
 
   const sortedCountries = useMemo(() => {
-    return [...SUPPORTED_COUNTRIES].sort((a, b) =>
-      a.name.localeCompare(b.name)
-    );
+    return [...SUPPORTED_COUNTRIES].sort((a, b) => a.name.localeCompare(b.name));
   }, [SUPPORTED_COUNTRIES]);
 
   return (
@@ -184,10 +170,7 @@ export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
                         </SelectTrigger>
                         <SelectContent>
                           {sortedCountries.map((country) => (
-                            <SelectItem
-                              key={country.code}
-                              value={country.code.toLowerCase()}
-                            >
+                            <SelectItem key={country.code} value={country.code.toLowerCase()}>
                               {country.name}
                             </SelectItem>
                           ))}
@@ -202,9 +185,9 @@ export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
 
             {showCountryHelp && (
               <div className="text-xs bg-green-50 dark:bg-green-900/30 p-3 rounded-md mt-2 text-gray-600 dark:text-gray-300">
-                Different countries have different electricity generation
-                methods and carbon intensities. For example, countries with more
-                renewable energy will have lower carbon emissions per kWh.
+                Different countries have different electricity generation methods and carbon
+                intensities. For example, countries with more renewable energy will have lower
+                carbon emissions per kWh.
               </div>
             )}
 
@@ -225,8 +208,7 @@ export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="flex items-center">
-                    Energy Consumption{" "}
-                    <span className="text-red-500 ml-1">*</span>
+                    Energy Consumption <span className="text-red-500 ml-1">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -235,9 +217,7 @@ export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
                       disabled={isCalculating}
                       className="transition-all duration-200"
                       {...field}
-                      onChange={(e) =>
-                        field.onChange(parseFloat(e.target.value) || "")
-                      }
+                      onChange={(e) => field.onChange(parseFloat(e.target.value) || "")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -271,12 +251,8 @@ export function ElectricityForm({ onCalculate }: ElectricityFormProps) {
                         <SelectValue placeholder="Select unit" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="kwh">
-                          Kilowatt-hours (kWh)
-                        </SelectItem>
-                        <SelectItem value="mwh">
-                          Megawatt-hours (MWh)
-                        </SelectItem>
+                        <SelectItem value="kwh">Kilowatt-hours (kWh)</SelectItem>
+                        <SelectItem value="mwh">Megawatt-hours (MWh)</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>

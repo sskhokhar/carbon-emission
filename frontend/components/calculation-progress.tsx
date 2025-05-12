@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Progress } from "@/components/ui/progress"
+import { useEffect, useState } from "react";
+import { Progress } from "@/components/ui/progress";
 
 export function CalculationProgress() {
-  const [progress, setProgress] = useState(0)
-  const [status, setStatus] = useState("Initializing calculation...")
+  const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState("Initializing calculation...");
 
   useEffect(() => {
     const statuses = [
@@ -15,32 +15,32 @@ export function CalculationProgress() {
       "Applying regional adjustments...",
       "Calculating carbon footprint...",
       "Finalizing results...",
-    ]
+    ];
 
-    let currentStep = 0
+    let currentStep = 0;
 
     const interval = setInterval(() => {
       if (currentStep < statuses.length) {
-        setStatus(statuses[currentStep])
-        currentStep++
+        setStatus(statuses[currentStep]);
+        currentStep++;
       }
-    }, 300)
+    }, 300);
 
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
-          clearInterval(progressInterval)
-          return 100
+          clearInterval(progressInterval);
+          return 100;
         }
-        return prev + 1
-      })
-    }, 30)
+        return prev + 1;
+      });
+    }, 30);
 
     return () => {
-      clearInterval(interval)
-      clearInterval(progressInterval)
-    }
-  }, [])
+      clearInterval(interval);
+      clearInterval(progressInterval);
+    };
+  }, []);
 
   return (
     <div className="space-y-2">
@@ -50,5 +50,5 @@ export function CalculationProgress() {
       </div>
       <Progress value={progress} className="h-2" />
     </div>
-  )
+  );
 }
