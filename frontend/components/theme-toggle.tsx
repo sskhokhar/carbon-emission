@@ -1,27 +1,31 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "next-themes";
-
-import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes"
+import { Button } from "@/components/ui/button"
+import { Moon, Sun } from "lucide-react"
+import { useEffect, useState } from "react"
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
-  const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
-  };
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return <Button variant="ghost" size="icon" className="w-9 h-9 opacity-0" />
+  }
 
   return (
-    <div className="flex items-center space-x-2">
-      <Sun className="h-[1.2rem] w-[1.2rem] text-muted-foreground" />
-      <Switch
-        checked={theme === "dark"}
-        onCheckedChange={toggleTheme}
-        className="data-[state=checked]:bg-primary"
-      />
-      <Moon className="h-[1.2rem] w-[1.2rem] text-muted-foreground" />
-    </div>
-  );
+    <Button
+      variant="ghost"
+      size="icon"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      className="w-9 h-9"
+      aria-label="Toggle theme"
+    >
+      {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+    </Button>
+  )
 }

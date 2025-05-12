@@ -1,9 +1,11 @@
-import HomeView from "@/views/home/home.view";
+"use client";
+
+import { HomeView } from "@/views/home/home.view";
 
 export default function Home() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <main className="min-h-screen bg-gradient-to-b from-green-50 to-white dark:from-green-950 dark:to-gray-950">
       <HomeView />
-    </div>
+    </main>
   );
 }

@@ -1,54 +1,27 @@
-# syntax=docker.io/docker/dockerfile:1
+# Use official Node.js image
+FROM node:18-alpine
 
-FROM node:20-alpine AS base
-
-# Install dependencies only when needed
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
+# Set working directory
 WORKDIR /app
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+# Install dependencies
+COPY package.json package-lock.json* ./
+RUN npm ci
 
-RUN \
-    if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-    elif [ -f package-lock.json ]; then npm ci; \
-    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-    else echo "Lockfile not found." && exit 1; \
-    fi
-
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy app files
 COPY . .
 
-# Inject public environment variable for Next.js at build time
+# Set build-time environment variable (passed via --build-arg)
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
-RUN \
-    if [ -f yarn.lock ]; then yarn run build; \
-    elif [ -f package-lock.json ]; then npm run build; \
-    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-    else echo "Lockfile not found." && exit 1; \
-    fi
+# Build Next.js app
+RUN npm run build
 
-# Production image
-FROM base AS runner
-WORKDIR /app
-
+# Expose port and set production mode
 ENV NODE_ENV=production
-ENV HOSTNAME="0.0.0.0"
-ENV PORT=3001
+ENV PORT=3000
+EXPOSE 3000
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-EXPOSE 3001
-
-CMD ["node", "server.js"]
+# Start Next.js app (standalone output preferred for production)
+CMD ["npm", "start"]

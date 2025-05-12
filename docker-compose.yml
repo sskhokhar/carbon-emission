@@ -1,39 +1,37 @@
-version: '3.8'
+version: "3.8"
 
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
     environment:
-      - NODE_ENV=development
-      - PORT=3000
-      - CARBON_INTERFACE_API=
-    volumes:
-      - ./backend/data:/app/data
+      NODE_ENV: development
+      PORT: 3000
+      CARBON_INTERFACE_API: wy0MEVLAfLOFYXUSuBLv1g
     networks:
       - app-network
     restart: unless-stopped
+    ports:
+      - "3000:3000"
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: http://localhost:3000
-    ports:
-      - "3001:3001"
+        NEXT_PUBLIC_API_URL: http://backend:3000
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3000
-      - PORT=3001
+      NEXT_PUBLIC_API_URL: http://backend:3000
+      PORT: 3001
     depends_on:
       - backend
     networks:
       - app-network
     restart: unless-stopped
+    ports:
+      - "3001:3001"
 
 networks:
   app-network:
-    driver: bridge 
+    driver: bridge

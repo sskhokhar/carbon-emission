@@ -1,5 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const isDevelopment = process.env.NEXT_PUBLIC_ENV === "development";
+const isDevelopment = process.env.NEXT_PUBLIC_ENV === "development" || true;
 
 export const logApiCall = (
   method: string,

@@ -3,9 +3,11 @@ import {
   getVehicleMakes,
   getVehicleModels,
   estimateVehicleEmissions,
+} from "@/lib/services";
+import type {
   VehicleEmissionRequest,
   CarbonEstimationResult,
-} from "@/lib/api";
+} from "@/lib/interfaces";
 
 export function useVehicleMakes() {
   return useQuery({
