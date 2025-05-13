@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft,BarChart3 } from "lucide-react";
+import { ArrowLeft, BarChart3 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 
@@ -27,7 +27,7 @@ export function Header({ currentPage }: HeaderProps) {
       <div>
         <h1 className="text-3xl font-bold flex items-center gap-2">
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#0a1a33] to-[#29a7df]">
-            Carbon Calculator
+            Carbon Footprint Calculator
           </span>
         </h1>
         <p className="text-gray-500 dark:text-gray-400 mt-1">
